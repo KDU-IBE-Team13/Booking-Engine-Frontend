@@ -1,8 +1,6 @@
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-
-import './Footer.scss';
+import { FooterContainer, Logo, CompanyInfo } from './FooterStyles';
 
 import companyLogoWhite from '../../assets/company-logo-white.png';
 import footerConfig from '../../data/footerConfig.json';
@@ -10,26 +8,25 @@ import footerConfig from '../../data/footerConfig.json';
 const { logo, companyName } = footerConfig;
 
 
-function Footer() {
-
+const Footer = () => {
   return (
-    <footer className="footer">
+    <FooterContainer>
       <Container maxWidth="xl">
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Box display="flex" alignItems="center">
-            <img src={logo || companyLogoWhite} className="logo" alt="logo"/>
+            <Logo src={logo || companyLogoWhite} alt="logo" />
           </Box>
 
           <Box>
-            <Typography variant="body2" className="company-info">
+            <CompanyInfo variant="body2">
               © {companyName} <br />
               All rights reserved.
-            </Typography>
+            </CompanyInfo>
           </Box>
         </Box>
       </Container>
-    </footer>
+    </FooterContainer>
   );
-}
+};
 
 export default Footer;
