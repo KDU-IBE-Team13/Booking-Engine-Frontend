@@ -1,0 +1,127 @@
+body {
+    .nav-header {
+        background-color: white;
+        box-shadow: none;
+        border-bottom: 1px solid #000000;
+        padding: 5px;
+
+        .hamburger-icon {
+            display: none;
+        }
+
+        .header-toolbar {
+            display: flex;
+            justify-content: space-between;
+    
+            .logo-container {
+                flex-grow: 2;
+                display: flex;
+                align-items: center;
+    
+                .booking-engine-text {
+                    color: #26266d;
+                    margin-left: 8px;
+                    font-family: "Lato", sans-serif;
+                    font-weight: 600;
+                }
+            }
+        }   
+        
+        .nav-items-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+    
+            .my-bookings-text {
+                font-family: "Lato", sans-serif;
+                text-transform: uppercase;
+                color: #000000;
+                margin-right: 16px;
+                font-weight: 700;
+            }
+            
+            .nav-item {
+                display: flex;
+                align-items: center;
+                margin-right: 16px;
+            
+                .language-text,
+                .currency-text {
+                margin-left: 4px;
+                color: #26266d;
+                font-family: "Lato", sans-serif;
+                font-weight: 700;
+                font-size: 1rem;
+                }
+            }
+        }
+        
+        .login-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .login-button {
+            background-color: #26266d;
+            color: white;
+            box-shadow: none;
+            font-family: "Lato", sans-serif;
+            font-weight: 700;
+        }
+
+        @media (max-width: 767px) {
+            .logo-container {
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+
+              .booking-engine-text {
+                font-size: 1rem;
+              }
+            }
+        
+            .nav-items-container {
+              display: none; 
+        
+              &.mobile-menu-open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: #fff;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+                z-index: 100;
+              }
+        
+              .nav-item {
+                margin-bottom: 10px; 
+              }
+            }
+        
+            .hamburger-icon {
+              display: block;
+              cursor: pointer;
+            }
+          }
+    }      
+   
+}
+ 
+
+@keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+.header-toolbar {
+    animation: slideIn 0.3s ease; 
+}

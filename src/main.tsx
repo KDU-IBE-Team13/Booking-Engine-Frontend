@@ -1,12 +1,14 @@
-import ReactDOM from 'react-dom';
-import './index.css';
+import React from 'react'
+import ReactDOM from 'react-dom/client';
+import './index.scss';
 import App from './App';
 import { BrowserRouter } from "react-router-dom";
 
 import * as Sentry from "@sentry/react";
+import './utils/i18n'
 
 Sentry.init({
-  dsn: "https://c42c7a6c5acac43330297811e7576b5d@o4506863506554880.ingest.us.sentry.io/4506863589588992",
+  dsn: "https://6fa1765a1ecb24db948ef51c5c5c8a2d@o4506863506554880.ingest.us.sentry.io/4506863629238272",
   integrations: [
     Sentry.browserTracingIntegration(),
     Sentry.replayIntegration({
@@ -20,9 +22,10 @@ Sentry.init({
   replaysOnErrorSampleRate: 1.0,
 });
 
-ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  document.getElementById("root")
-);
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>,
+)

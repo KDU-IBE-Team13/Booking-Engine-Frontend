@@ -1,0 +1,6 @@
+{
+    "logo": "src/assets/company-logo.png",
+    "supportedLanguages": ["English", "Spanish", "French", "German"],
+    "supportedCurrencies": ["USD", "EUR", "GBP", "JPY"]
+}
+  
