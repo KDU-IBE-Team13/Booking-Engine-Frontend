@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import { StyledAppBar, StyledToolbar, StyledBox, StyledHamburgerIcon, StyledNavItemsContainer, StyledNavItem, StyledLoginContainer, StyledLoginButton } from './HeaderStyles';
+import { Box, Typography, Menu, MenuItem } from '@mui/material';
+import { StyledAppBar, StyledToolbar, StyledBox, StyledHamburgerIcon, StyledNavItemsContainer, StyledNavItem, StyledLoginContainer, StyledLoginButton, TitleTypography, StyledContainer } from './HeaderStyles';
 
 import companyLogo from '../../assets/company-logo.png';
 import currencyIcon from '../../assets/currency-icon.svg';
 import languageIcon from '../../assets/language-icon.svg';
 
 import headerConfig from '../../data/headerConfig.json';
+import { useTranslation } from 'react-i18next';
 
 const { logo, supportedLanguages, supportedCurrencies } = headerConfig;
 
@@ -20,6 +18,9 @@ const Header = () => {
   const [languageAnchor, setLanguageAnchor] = useState<HTMLDivElement | null>(null);
   const [currencyAnchor, setCurrencyAnchor] = useState<HTMLDivElement | null>(null);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(supportedLanguages[0].langName);
+
+  const { i18n, t } = useTranslation();
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
@@ -28,6 +29,16 @@ const Header = () => {
   const handleLanguageClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setLanguageAnchor(event.currentTarget);
   };
+
+  const handleLanguageChange = (language: {key: string, langName: string}) => {
+    setSelectedLanguage(language.langName);
+    setLanguageAnchor(null);
+    i18n.changeLanguage(language.key);
+    console.log(language)
+    console.log(i18n.store);
+
+  };
+
 
   const handleCurrencyClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setCurrencyAnchor(event.currentTarget);
@@ -40,13 +51,15 @@ const Header = () => {
 
   return (
     <StyledAppBar position="static">
-      <Container maxWidth="xl">
+      <StyledContainer maxWidth={false}>
         <StyledToolbar disableGutters>
           <StyledBox onClick={() => window.location.href = '/'}>
-            <img src={logo || companyLogo} alt="logo" className="logo-icon" />
-            <Typography variant="h6" noWrap className="booking-engine-text">
-              Internet Booking Engine
-            </Typography>
+            <Box>
+              <img src={logo || companyLogo} alt="logo" className="logo-icon" />
+            </Box>
+            <TitleTypography variant="h6" noWrap className="booking-engine-text">
+              {t('description.headerTitle')}
+            </TitleTypography>
           </StyledBox>
 
           <StyledHamburgerIcon onClick={toggleMobileMenu}>
@@ -59,13 +72,13 @@ const Header = () => {
             <StyledNavItem onClick={handleLanguageClick}>
               <img src={languageIcon} alt="language" />
               <Typography variant="caption" className="language-text">
-                {supportedLanguages.length > 0 ? supportedLanguages[0] : 'En'}
+                {selectedLanguage}
               </Typography>
             </StyledNavItem>
             <Menu anchorEl={languageAnchor} open={Boolean(languageAnchor)} onClose={handleClose}>
-              {supportedLanguages.map((language, index) => (
-                <MenuItem key={index} onClick={handleClose}>
-                  {language}
+              {supportedLanguages.length > 0 && supportedLanguages.map((language, index) => (
+                <MenuItem key={index} onClick={() => handleLanguageChange(language)}>
+                  {language.langName}
                 </MenuItem>
               ))}
             </Menu>
@@ -86,12 +99,12 @@ const Header = () => {
 
             <StyledLoginContainer>
               <StyledLoginButton variant="contained" color="primary">
-                Login
+                {t('description.login')}
               </StyledLoginButton>
             </StyledLoginContainer>
           </StyledNavItemsContainer>
         </StyledToolbar>
-      </Container>
+      </StyledContainer>
     </StyledAppBar>
   );
 };

@@ -1,17 +1,20 @@
-import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import { FooterContainer, Logo, CompanyInfo } from './FooterStyles';
+import { FooterContainer, Logo, CompanyInfo, StyledContainer } from './FooterStyles';
 
 import companyLogoWhite from '../../assets/company-logo-white.png';
 import footerConfig from '../../data/footerConfig.json';
+
+import { useTranslation } from 'react-i18next';
 
 const { logo, companyName } = footerConfig;
 
 
 const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <FooterContainer>
-      <Container maxWidth="xl">
+      <StyledContainer maxWidth={false}>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Box display="flex" alignItems="center">
             <Logo src={logo || companyLogoWhite} alt="logo" />
@@ -20,11 +23,11 @@ const Footer = () => {
           <Box>
             <CompanyInfo variant="body2">
               © {companyName} <br />
-              All rights reserved.
+              {t('description.footer')}
             </CompanyInfo>
           </Box>
         </Box>
-      </Container>
+      </StyledContainer>
     </FooterContainer>
   );
 };

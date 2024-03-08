@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Typography from '@mui/material/Typography';
+import { Container, Typography } from '@mui/material';
 
 export const FooterContainer = styled.footer`
   background-color: #26266d;
@@ -9,6 +9,12 @@ export const FooterContainer = styled.footer`
   bottom: 0;
   width: 100%;
 `;
+
+export const StyledContainer = styled (Container)`
+  && {
+    padding: 0 5rem;
+  }
+`
 
 export const Logo = styled.img`
   width: 150px;

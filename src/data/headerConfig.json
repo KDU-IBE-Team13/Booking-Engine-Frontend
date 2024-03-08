@@ -1,6 +1,23 @@
 {
     "logo": "src/assets/company-logo.png",
-    "supportedLanguages": ["English", "Spanish", "French", "German"],
+    "supportedLanguages": [
+        {
+            "key" : "en",
+            "langName": "English"
+        },
+        {
+            "key" : "es",
+            "langName": "Spanish"
+        },
+        {
+            "key" : "fr",
+            "langName": "French"
+        },
+        {
+            "key" : "de",
+            "langName": "German"
+        }
+    ],
     "supportedCurrencies": ["USD", "EUR", "GBP", "JPY"]
 }
   

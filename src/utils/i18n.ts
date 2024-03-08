@@ -15,7 +15,36 @@ i18n
       en: {
         translation: {
           description: {
-            part1: 'Demo Text',
+            footer: 'All rights reserved.',
+            headerTitle: 'Internet Booking Engine',
+            login: 'Login'
+          }
+        }
+      },
+      es: {
+        translation: {
+          description: {
+            footer: 'Todos los derechos reservados.',
+            headerTitle: 'Motor de Reservas en Internet',
+            login: 'Iniciar sesión'
+          }
+        }
+      },
+      fr: {
+        translation: {
+          description: {
+            footer: 'Tous droits réservés.',
+            headerTitle: 'Moteur de réservation en ligne',
+            login: 'Connexion'
+          }
+        }
+      },
+      de: {
+        translation: {
+          description: {
+            footer: 'Alle Rechte vorbehalten.',
+            headerTitle: 'Internet-Buchungsmaschine',
+            login: 'Anmelden'
           }
         }
       }

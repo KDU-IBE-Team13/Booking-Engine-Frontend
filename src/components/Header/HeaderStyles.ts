@@ -1,9 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
+import { Container, Typography, AppBar, Box, Toolbar, Button} from '@mui/material';
 
 export const slideIn = keyframes`
   from {
@@ -25,6 +22,12 @@ export const StyledAppBar = styled(AppBar)`
   }
 `;
 
+export const StyledContainer = styled (Container)`
+  && {
+    padding: 0 5rem;
+  }
+`
+
 export const StyledToolbar = styled(Toolbar)`
   && {
     animation: ${slideIn} 0.3s ease;
@@ -33,7 +36,7 @@ export const StyledToolbar = styled(Toolbar)`
 
 export const StyledBox = styled(Box)`
   && {
-    flex-grow: 2;
+    flex-grow: 3;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -63,7 +66,7 @@ export const StyledNavItemsContainer = styled(Box)`
     flex-grow: 1;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
 
     @media (max-width: 767px) {
       display: none;
@@ -116,3 +119,9 @@ export const StyledLoginButton = styled(Button)`
     font-weight: 700;
   }
 `;
+
+export const TitleTypography = styled(Typography)`
+  && {
+    font-size: 1.2rem;
+  }
+`
