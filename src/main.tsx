@@ -1,8 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client';
-import './index.scss';
 import App from './App';
 import { BrowserRouter } from "react-router-dom";
+
+import { ThemeProvider } from 'styled-components';
+import { theme, GlobalStyle } from './Theme';
 
 import * as Sentry from "@sentry/react";
 import './utils/i18n'
@@ -24,8 +26,11 @@ Sentry.init({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <GlobalStyle />
+        <App />
+      </BrowserRouter>
+    </ThemeProvider> 
   </React.StrictMode>,
 )

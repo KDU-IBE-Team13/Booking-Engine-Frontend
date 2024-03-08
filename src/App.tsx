@@ -1,13 +1,13 @@
-import Header from "./components/Header/Header"
-import Footer from "./components/Footer/Footer"
-import './App.scss'
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import { AppContainer } from "./AppStyles";
 
 function App() {
   return (
-    <div className="App">
+    <AppContainer>
       <Header />
       <Footer />
-    </div>
+    </AppContainer>
   )
 }
 
