@@ -1,5 +1,5 @@
 export const fetchDemoAPI = () => {
-    fetch(`${import.meta.env.VITE_AZURE_BACKEND_APP_URL}/sampleAPI`)
+    fetch(`https://team13-ibe-backend-appservice-kdu24.azurewebsites.net/sampleAPI`)
     .then(response => response.text())
     .then(data => console.log(data));
 }
