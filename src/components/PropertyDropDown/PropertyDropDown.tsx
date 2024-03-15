@@ -4,67 +4,102 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
+import { useEffect, useState } from "react";
+import { FAILED_DATA_MESSAGE } from "../../Constants/Constants";
 
-const options = [
-  { value: 10, label: "Property 1" },
-  { value: 20, label: "Property 2" },
-  { value: 30, label: "Property 3" },
-];
+interface Property {
+  property_id: number;
+  property_name: string;
+}
 
 export default function PropertyDropDown() {
-  const [age, setAge] = React.useState<number[]>([]);
+  const [propertyNames, setPropertyNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/v1/property");
+        if (!response.ok) {
+          throw new Error(FAILED_DATA_MESSAGE);
+        }
+        const responseData = await response.json();
+        const properties: Property[] = responseData.data.listProperties;
+        const names: string[] = properties.map(
+          (property) => property.property_name
+        );
+        setPropertyNames(names);
+      } catch (error) {
+        console.error("Error fetching property rates:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const [selectedProperties, setSelectedProperties] = React.useState<string[]>(
+    []
+  );
   const [inputLabel, setInputLabel] = React.useState("Search all properties");
 
-  const handleChange = (event: SelectChangeEvent<number[]>) => {
-    setAge(event.target.value);
-    if (event.target.value.length === 0) {
-      setInputLabel("Placeholder");
+  const handleChange = (event: SelectChangeEvent<string[]>) => {
+    const value = event.target.value;
+    const selectedValues = Array.isArray(value) ? value : [value as string];
+
+    setSelectedProperties(selectedValues);
+  };
+
+  const handleMenuItemClick = (value: string) => {
+    if (selectedProperties.includes(value)) {
+      setSelectedProperties(selectedProperties.filter((val) => val !== value));
     } else {
-      setInputLabel("");
+      setSelectedProperties([...selectedProperties, value]);
     }
   };
 
-  const handleMenuItemClick = (value: number) => {
-    if (age.includes(value)) {
-      setAge(age.filter((val) => val !== value));
-    } else {
-      setAge([...age, value]);
-      setInputLabel("");
-    }
-  };
-
-  const isOptionSelected = (value: number) => age.includes(value);
+  const isOptionSelected = (value: string) =>
+    selectedProperties.includes(value);
 
   return (
     <>
-      <label htmlFor="properties" className="property">
-        Property name*
-      </label>
-      <FormControl sx={{ minWidth: 220 }} className="property-select">
-        <InputLabel id="demo-simple-select-label" className="property-select">
+      <label className="property">Property name*</label>
+      <FormControl className="property-select">
+        <InputLabel
+          shrink={selectedProperties.length > 0}
+          className={
+            "property-select-label" +
+            (selectedProperties.length > 0
+              ? " property-select-label-hidden"
+              : "")
+          }
+        >
           {inputLabel}
         </InputLabel>
         <Select
           className="property-select"
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
+          labelId="simple-select-label"
           multiple
-          value={age}
+          value={selectedProperties}
           onChange={handleChange}
           renderValue={(selected) =>
-            (selected as number[])
-              .map((value) => options.find((opt) => opt.value === value)?.label)
+            (selected as string[])
+              .map((value) => propertyNames.find((opt) => opt === value))
               .join(", ")
           }
+          MenuProps={{
+            PaperProps: {
+              style: {
+                maxHeight: 220,
+              },
+            },
+          }}
         >
-          <MenuItem disabled value=""></MenuItem>
-          {options.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
+          {propertyNames.map((option) => (
+            <MenuItem key={option} value={option}>
               <Checkbox
-                checked={isOptionSelected(option.value)}
-                onClick={() => handleMenuItemClick(option.value)}
+                checked={isOptionSelected(option)}
+                onClick={() => handleMenuItemClick(option)}
               />
-              <span>{option.label}</span>
+              <span>{option}</span>
             </MenuItem>
           ))}
         </Select>

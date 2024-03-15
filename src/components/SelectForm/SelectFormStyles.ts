@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import Banner from "../../assets/banner.png";
+import BackgroundImage from "../../assets/Banner.jpg";
 
 export const SelectFormStyled = styled.div`
-  background-image: url(${Banner});
+  background-image: url(${BackgroundImage});
   background-size: cover;
   background-position: center;
-  height: 42.5rem;
+  min-height: 87vh;
   width: 100vw;
   display: flex;
 
@@ -14,7 +14,7 @@ export const SelectFormStyled = styled.div`
     background-color: white;
     height: 38.9375rem;
     width: 23.75rem;
-    margin: 2.5% 0 0 3.8%;
+    margin: 3% 0 0 3.8%;
     border-radius: 0.3125rem;
     padding: 2.75rem;
     display: flex;
@@ -22,7 +22,7 @@ export const SelectFormStyled = styled.div`
   }
 
   .searchButton {
-    margin: auto;
+    margin: 9.5rem auto;
     border-radius: 0.25rem;
     padding: 0.75rem 1.25rem;
     width: 8.75rem;
@@ -37,7 +37,7 @@ export const SelectFormStyled = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 0.5rem;
+    margin-top: 0.8rem;
   }
 
   .property {
@@ -49,6 +49,38 @@ export const SelectFormStyled = styled.div`
   }
 
   .property-select {
-    height: 3rem;
+    height: 3.1rem;
+  }
+
+  .rooms-dropdown{
+    width: 6.4rem
+  }
+
+  .property-select-label-hidden {
+    display: none;
+  }
+
+  .tileContentPrice {
+    text-align: center;
+    margin: 0;
+    font-weight: 400;
+    font-size: 0.875rem;
+  }
+
+  .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+    padding: 0 0.25rem 0 0;
+  }
+
+  .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+    padding: 0 0 0 0.5rem;
+    height: 3.1rem;
+  }
+
+  .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+    padding: 0.6575rem 0.71875rem 0.975rem;
+  }
+
+  .css-14ux82-MuiButtonBase-root-MuiButton-root {
+    min-width: 2.5rem;
   }
 `;

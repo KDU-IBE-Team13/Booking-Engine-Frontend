@@ -7,28 +7,29 @@ import {
 } from "@mui/material";
 
 const RoomSelect = () => {
-  const [age, setAge] = useState<number | string>("");
+  const [rooms, setRooms] = useState<number | "">(1);
 
-  const handleChange = (event: SelectChangeEvent<number | string>) => {
-    setAge(event.target.value as number | string);
+  const roomOptions = [1, 2, 3, 4];
+
+  const handleChange = (event: SelectChangeEvent<number | "">) => {
+    setRooms(event.target.value as number | "");
   };
 
   return (
     <div>
-      <FormControl fullWidth sx={{ width: 100 }}>
-        <label htmlFor="properties" className="property room-property">
-          Rooms
-        </label>
+      <FormControl>
+        <label className="property">Rooms</label>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
+          value={rooms}
           onChange={handleChange}
-          sx={{ width: "77px", marginLeft: "14px" }}
+          className="rooms-dropdown"
+          displayEmpty
         >
-          <MenuItem value={1}>1</MenuItem>
-          <MenuItem value={2}>2</MenuItem>
-          <MenuItem value={3}>3</MenuItem>
+          {roomOptions.map((room, index) => (
+            <MenuItem key={index} value={room}>
+              {room}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </div>

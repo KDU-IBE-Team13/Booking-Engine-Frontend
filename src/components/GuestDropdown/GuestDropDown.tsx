@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { MenuItem, TextField, Button, Menu, Paper } from "@mui/material";
+import { MenuItem, TextField, Button, Menu } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { MenuItemStyled, GuestDropdownStyled } from "./GuestDropDownStyled";
 
 interface GuestCounts {
   adults: number;
@@ -8,9 +9,9 @@ interface GuestCounts {
   old: number;
 }
 
-const GuestDropdown: React.FC = () => {
+const GuestDropdown = () => {
   const [guestCounts, setGuestCounts] = useState<GuestCounts>({
-    adults: 0,
+    adults: 1,
     children: 0,
     old: 0,
   });
@@ -33,10 +34,8 @@ const GuestDropdown: React.FC = () => {
   };
 
   return (
-    <div>
-      <label htmlFor="properties" className="property">
-        Guests
-      </label>
+    <GuestDropdownStyled>
+      <label className="property">Guests</label>
       <TextField
         label=""
         value={`${
@@ -50,18 +49,15 @@ const GuestDropdown: React.FC = () => {
               aria-controls="guest-menu"
               aria-haspopup="true"
               onClick={handleClick}
-              style={{ padding: 0, minWidth: "unset" }}
-              sx={{ height: "60px", width: "35px", color: "black" }}
+              sx={{ height: "50px", width: "20px", color: "black" }}
             >
               <ArrowDropDownIcon />
             </Button>
           ),
           readOnly: true,
         }}
-        sx={{ width: "200px" }}
       />
       <Menu
-        sx={{ width: "300px" }}
         id="guest-menu"
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -75,32 +71,44 @@ const GuestDropdown: React.FC = () => {
           horizontal: "right",
         }}
       >
-        <MenuItem sx={{ width: "200px" }}>
-          <div>
-            Adults
-            <Button onClick={() => handleCountChange("adults", 1)}>+</Button>
-            <span>{guestCounts.adults}</span>
-            <Button onClick={() => handleCountChange("adults", -1)}>-</Button>
-          </div>
+        <MenuItem>
+          <MenuItemStyled className="menu-item">
+            <div className="guest">Adults</div>
+            <div>
+              <button onClick={() => handleCountChange("adults", -1)}>-</button>
+              <span>{guestCounts.adults}</span>
+              <button onClick={() => handleCountChange("adults", 1)}>+</button>
+            </div>
+          </MenuItemStyled>
         </MenuItem>
-        <MenuItem sx={{ width: "200px" }}>
-          <div>
-            Children
-            <Button onClick={() => handleCountChange("children", 1)}>+</Button>
-            <span>{guestCounts.children}</span>
-            <Button onClick={() => handleCountChange("children", -1)}>-</Button>
-          </div>
+
+        <MenuItem>
+          <MenuItemStyled className="menu-item">
+            <div className="guest">Children</div>
+            <div>
+              <button onClick={() => handleCountChange("children", -1)}>
+                -
+              </button>
+              <span>{guestCounts.children}</span>
+              <button onClick={() => handleCountChange("children", 1)}>
+                +
+              </button>
+            </div>
+          </MenuItemStyled>
         </MenuItem>
-        <MenuItem sx={{ width: "200px" }}>
-          <div>
-            Old
-            <Button onClick={() => handleCountChange("old", 1)}>+</Button>
-            <span>{guestCounts.old}</span>
-            <Button onClick={() => handleCountChange("old", -1)}>-</Button>
-          </div>
+
+        <MenuItem>
+          <MenuItemStyled className="menu-item">
+            <div className="guest">Old</div>
+            <div>
+              <button onClick={() => handleCountChange("old", -1)}>-</button>
+              <span>{guestCounts.old}</span>
+              <button onClick={() => handleCountChange("old", 1)}>+</button>
+            </div>
+          </MenuItemStyled>
         </MenuItem>
       </Menu>
-    </div>
+    </GuestDropdownStyled>
   );
 };
 

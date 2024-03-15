@@ -5,6 +5,7 @@ import RoomSelect from "../RoomSelect/RoomSelect";
 import Calender from "../Calender/Calender";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
+import { FAILED_DATA_MESSAGE } from "../../Constants/Constants";
 
 export const SelectForm = () => {
   const [propertyRates, setPropertyRates] = useState<{ [key: string]: number }>(
@@ -18,10 +19,9 @@ export const SelectForm = () => {
           "http://localhost:8080/api/v1/nightly-rate"
         );
         if (!response.ok) {
-          throw new Error("Failed to fetch data");
+          throw new Error(FAILED_DATA_MESSAGE);
         }
         const data = await response.json();
-        console.log("data: ", data);
         setPropertyRates(data);
       } catch (error) {
         console.error("Error fetching property rates:", error);
@@ -32,23 +32,25 @@ export const SelectForm = () => {
   }, []);
 
   const tileContent = ({ date }: any) => {
-    const next = new Date(date);
-    next.setDate(next.getDate() + 1);
-    const nextISO = next.toISOString().split("T")[0] + "T00:00:00.000Z";
-    console.log(propertyRates[nextISO]);
-    console.log(date);
+    const currentDate = new Date();
+    const currentDateISO =
+      currentDate.toISOString().split("T")[0] + "T00:00:00.000Z";
+
+    const nextDate = new Date(date);
+    nextDate.setDate(nextDate.getDate() + 1);
+    const nextDateISO = nextDate.toISOString().split("T")[0] + "T00:00:00.000Z";
+
+    if (nextDateISO < currentDateISO) {
+      return null;
+    }
+
     const price =
-      propertyRates[nextISO] !== undefined ? propertyRates[nextISO] : null;
+      propertyRates[nextDateISO] !== undefined
+        ? propertyRates[nextDateISO]
+        : null;
 
     return (
-      <p
-        style={{
-          textAlign: "center",
-          margin: 0,
-          fontWeight: 400,
-          fontSize: "0.875rem",
-        }}
-      >
+      <p className="tileContentPrice">
         {price != null && "$"}
         {price}
       </p>

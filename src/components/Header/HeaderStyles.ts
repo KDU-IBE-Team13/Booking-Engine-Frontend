@@ -48,6 +48,12 @@ export const StyledBox = styled(Box)`
       font-weight: 600;
     }
   }
+
+  @media screen and (max-width: 455px){
+    .booking-engine-text{
+    display: none;
+    }
+  }
 `;
 
 export const StyledHamburgerIcon = styled.div`
