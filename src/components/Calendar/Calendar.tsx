@@ -4,8 +4,10 @@ import "react-calendar/dist/Calendar.css";
 import { Button, IconButton } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { BookingDatesCalendarStyled, DoubleCalendarStyled } from "./CalendarStyled";
-import { setWeekDays, dateDiffInDays } from "../../utils/Utils"; 
-import { MAX_BOOKING_DAYS, ERROR_MESSAGE } from "../../Constants/Constants";
+import { setWeekDays, dateDiffInDays } from "../../utils/utils"; 
+import { RootState } from "../../redux/store";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 interface CalendarProps {
   tileContent: (args: { date: Date }) => JSX.Element | null;
@@ -13,6 +15,13 @@ interface CalendarProps {
 
 
 const BookingDatesCalendar: React.FC<CalendarProps> = ({ tileContent }) => {
+
+  const lengthOfStay = useSelector(
+    (state: RootState) => state.landingPageConfig.searchForm.lengthOfStay
+  );
+
+  const { t } = useTranslation();
+  
   const present_date = new Date();
   const [bookingStartDate, setBookingStartDate] = useState<Date | null>(null);
   const [bookingEndDate, setBookingEndDate] = useState<Date | null>(null);
@@ -30,8 +39,8 @@ const BookingDatesCalendar: React.FC<CalendarProps> = ({ tileContent }) => {
     } else if (bookingEndDate === null) {
       setBookingEndDate(date);
       const diffInDays = dateDiffInDays(bookingStartDate, date);
-      if (diffInDays > MAX_BOOKING_DAYS) {
-        setError(ERROR_MESSAGE);
+      if (diffInDays > lengthOfStay) {
+        setError(t('landingPage.calendarDateRangeError') + lengthOfStay + " " + t('landingPage.calendarDays'));
         setBookingEndDate(null);
         setBookingStartDate(null)
       } else {
@@ -74,12 +83,12 @@ useEffect(() => {
   return (
     <BookingDatesCalendarStyled>
       <label className="selectDates">
-        Select dates
+       {t('landingPage.calendarLabel')}
       </label>
       <IconButton onClick={showCalendar} className="calendar-container">
-        <div>{checkInDate ? checkInDate.toLocaleDateString() : "Check-in"}</div>
+        <div>{checkInDate ? checkInDate.toLocaleDateString() : t('landingPage.checkIn')}</div>
         <div> &#8594;</div>
-        <div>{checkOutDate ? checkOutDate.toLocaleDateString() : "Check out"}</div>
+        <div>{checkOutDate ? checkOutDate.toLocaleDateString() : t('landingPage.checkOut')}</div>
         <CalendarMonthIcon />
       </IconButton>
       {isCalendar && (
@@ -97,7 +106,7 @@ useEffect(() => {
             showFixedNumberOfWeeks={false}
           />
           <div className="SubmitBtnContainer">
-            <Button className="submitBtn" disabled ={!bookingStartDate || !bookingEndDate} onClick={setBookingDates}>APPLY DATES</Button>
+            <Button className="submitBtn" disabled ={!bookingStartDate || !bookingEndDate} onClick={setBookingDates}>{t('landingPage.calendarButton')}</Button>
             <div className="errorMsg">{error}</div>
           </div>
         </DoubleCalendarStyled>

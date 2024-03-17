@@ -1,8 +1,11 @@
 import styled from "styled-components";
-import BackgroundImage from "../../assets/Banner.jpg";
 
-export const SelectFormStyled = styled.div`
-  background-image: url(${BackgroundImage});
+type BannerStyledProps = {
+  backgroundimage: string;
+};
+
+export const SelectFormStyled = styled.div<BannerStyledProps>`
+  background-image: url(${(props) => props.backgroundimage});
   background-size: cover;
   background-position: center;
   min-height: 87vh;
