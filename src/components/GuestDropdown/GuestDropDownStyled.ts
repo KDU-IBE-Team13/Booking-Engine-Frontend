@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+export const MenuItemWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+`
+
 export const MenuItemStyled = styled.div`
   display: flex;
   justify-content: space-between;

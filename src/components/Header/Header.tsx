@@ -1,29 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Typography, Menu, MenuItem } from '@mui/material';
 import { StyledAppBar, StyledToolbar, StyledBox, StyledHamburgerIcon, StyledNavItemsContainer, StyledNavItem, StyledLoginContainer, StyledLoginButton, TitleTypography, StyledContainer } from './HeaderStyles';
 
 import companyLogo from '../../assets/company-logo.png';
-import currencyIcon from '../../assets/currency-icon.svg';
 import languageIcon from '../../assets/language-icon.svg';
 
-import headerConfig from '../../data/headerConfig.json';
 import { useTranslation } from 'react-i18next';
-
-const { logo, supportedLanguages, supportedCurrencies } = headerConfig;
-
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchExchangeRates, selectCurrency } from '../../redux/slices/currencySlice';
+import { AppDispatch, RootState } from '../../redux/store';
+import { changeLanguage } from '../../redux/slices/languageSlice';
+import { fetchHeaderConfig } from '../../redux/slices/configSlice';
+import { ICurrency } from '../../types/ICurrency';
 
 
 const Header = () => {
   const [languageAnchor, setLanguageAnchor] = useState<HTMLDivElement | null>(null);
   const [currencyAnchor, setCurrencyAnchor] = useState<HTMLDivElement | null>(null);
-  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>(supportedLanguages[0].langName);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+
+  const dispatch = useDispatch<AppDispatch>();
+  const selectedLanguage = useSelector((state: RootState) => state.language.selectedLanguage);
+
+  const headerConfig = useSelector((state: RootState) => state.config.headerConfig);
+  const loading = useSelector((state: RootState) => state.config.loading);
+  const error = useSelector((state: RootState) => state.config.error);
+  const selectedCurrency = useSelector((state: RootState) => state.currency.selectedCurrency);
+  const selectedCurrencySymbol = useSelector((state: RootState) => state.currency.selectedCurrencySymbol);
+
+  const { logo, supportedLanguages, supportedCurrencies } = headerConfig;
+  
   const { i18n, t } = useTranslation();
 
+  useEffect(() => {
+    dispatch(fetchHeaderConfig());
+    dispatch(fetchExchangeRates());
+  }, [dispatch]);
+
+  if (loading) {
+    return <div>{t('landingPage.loading')}...</div>;
+  }
+
+  if (error) {
+    return <div>{t('landingPage.error')}: {error}</div>;
+  }
+
   const toggleMobileMenu = () => {
-    setMobileMenuOpen(!isMobileMenuOpen);
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   const handleLanguageClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -31,14 +56,16 @@ const Header = () => {
   };
 
   const handleLanguageChange = (language: {key: string, langName: string}) => {
-    setSelectedLanguage(language.langName);
+    dispatch(changeLanguage(language));
     setLanguageAnchor(null);
     i18n.changeLanguage(language.key);
-    console.log(language)
-    console.log(i18n.store);
-
   };
 
+  const handleCurrencyChange = (currency: ICurrency) => {
+    dispatch(selectCurrency(currency)); 
+    setCurrencyAnchor(null);
+
+  };
 
   const handleCurrencyClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setCurrencyAnchor(event.currentTarget);
@@ -72,7 +99,7 @@ const Header = () => {
             <StyledNavItem onClick={handleLanguageClick}>
               <img src={languageIcon} alt="language" />
               <Typography variant="caption" className="language-text">
-                {selectedLanguage}
+                {selectedLanguage.langName}
               </Typography>
             </StyledNavItem>
             <Menu anchorEl={languageAnchor} open={Boolean(languageAnchor)} onClose={handleClose}>
@@ -84,15 +111,14 @@ const Header = () => {
             </Menu>
 
             <StyledNavItem onClick={handleCurrencyClick}>
-              <img src={currencyIcon} alt="currency" />
               <Typography variant="caption" className="currency-text">
-                {supportedCurrencies.length > 0 ? supportedCurrencies[0] : 'USD'}
+                {selectedCurrencySymbol} {selectedCurrency}
               </Typography>
             </StyledNavItem>
             <Menu anchorEl={currencyAnchor} open={Boolean(currencyAnchor)} onClose={handleClose}>
-              {supportedCurrencies.map((currency, index) => (
-                <MenuItem key={index} onClick={handleClose}>
-                  {currency}
+              {supportedCurrencies.map((supportedCurrency, index) => (
+                <MenuItem key={index} onClick={() => handleCurrencyChange(supportedCurrency)}>
+                  {supportedCurrency.currencySymbol} {supportedCurrency.currency}
                 </MenuItem>
               ))}
             </Menu>

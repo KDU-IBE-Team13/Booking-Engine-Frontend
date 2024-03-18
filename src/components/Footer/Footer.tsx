@@ -1,16 +1,31 @@
-import Box from '@mui/material/Box';
+import { Box } from '@mui/material';
 import { FooterContainer, Logo, CompanyInfo, StyledContainer } from './FooterStyles';
-
 import companyLogoWhite from '../../assets/company-logo-white.png';
-import footerConfig from '../../data/footerConfig.json';
-
 import { useTranslation } from 'react-i18next';
-
-const { logo, companyName } = footerConfig;
-
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store';
+import { useEffect } from 'react';
+import { fetchFooterConfig } from '../../redux/slices/configSlice';
 
 const Footer = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch<AppDispatch>();
+  const footerConfig = useSelector((state: RootState) => state.config.footerConfig);
+  const loading = useSelector((state: RootState) => state.config.loading);
+  const error = useSelector((state: RootState) => state.config.error);
+  const { logo, companyName } = footerConfig;
+
+  useEffect(() => {
+    dispatch(fetchFooterConfig());
+  }, [dispatch]);
+
+  if (loading) {
+    return <div>{t('landingPage.loading')}...</div>;
+  }
+
+  if (error) {
+    return <div>{t('landingPage.error')}: {error}</div>;
+  }
 
   return (
     <FooterContainer>

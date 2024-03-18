@@ -1,12 +1,12 @@
 import moment from 'moment';
-import { WEEK_DAYS } from '../Constants/Constants';
+import { WEEK_DAYS } from '../constants/constants';
 
 export const setWeekDays = (
     locale: string | undefined,
     date: Date
   ): string => {
     return WEEK_DAYS[date.getDay()];
-  };
+};
 
 
 export const calculateMaxDate = (
@@ -24,4 +24,4 @@ export const calculateMaxDate = (
 export const dateDiffInDays = (date1: Date, date2: Date): number => {
     const diffInTime = date2.getTime() - date1.getTime();
     return Math.ceil(diffInTime / (1000 * 60 * 60 * 24));
-  };
+};

@@ -5,31 +5,34 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import { useEffect, useState } from "react";
-import { FAILED_DATA_MESSAGE } from "../../Constants/Constants";
+import { FAILED_PROPERTIES_FETCH_MESSAGE, PROPERTY_ENDPOINT } from "../../constants/constants";
+import { useTranslation } from "react-i18next";
 
 interface Property {
-  property_id: number;
-  property_name: string;
+  propertyId: number;
+  propertyName: string;
 }
 
 export default function PropertyDropDown() {
   const [propertyNames, setPropertyNames] = useState<string[]>([]);
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/property");
+        const response = await fetch(PROPERTY_ENDPOINT);
         if (!response.ok) {
-          throw new Error(FAILED_DATA_MESSAGE);
+          throw new Error(FAILED_PROPERTIES_FETCH_MESSAGE);
         }
         const responseData = await response.json();
-        const properties: Property[] = responseData.data.listProperties;
+        const properties: Property[] = responseData.properties;
         const names: string[] = properties.map(
-          (property) => property.property_name
+          (property) => property.propertyName
         );
         setPropertyNames(names);
       } catch (error) {
-        console.error("Error fetching property rates:", error);
+        console.error(FAILED_PROPERTIES_FETCH_MESSAGE, error);
       }
     };
 
@@ -39,7 +42,6 @@ export default function PropertyDropDown() {
   const [selectedProperties, setSelectedProperties] = React.useState<string[]>(
     []
   );
-  const [inputLabel, setInputLabel] = React.useState("Search all properties");
 
   const handleChange = (event: SelectChangeEvent<string[]>) => {
     const value = event.target.value;
@@ -61,7 +63,7 @@ export default function PropertyDropDown() {
 
   return (
     <>
-      <label className="property">Property name*</label>
+      <label className="property">{t('landingPage.propertyLabel')}*</label>
       <FormControl className="property-select">
         <InputLabel
           shrink={selectedProperties.length > 0}
@@ -72,7 +74,7 @@ export default function PropertyDropDown() {
               : "")
           }
         >
-          {inputLabel}
+          {t('landingPage.propertySelectPlaceholder')}
         </InputLabel>
         <Select
           className="property-select"
