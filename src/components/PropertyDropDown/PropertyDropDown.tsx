@@ -5,7 +5,11 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import { useEffect, useState } from "react";
-import { FAILED_PROPERTIES_FETCH_MESSAGE, PROPERTY_ENDPOINT } from "../../constants/constants";
+import {
+  FAILED_PROPERTIES_FETCH_MESSAGE,
+  PROPERTY_ENDPOINT,
+  TEAM_HOTEL_ID,
+} from "../../constants/constants";
 import { useTranslation } from "react-i18next";
 
 interface Property {
@@ -63,7 +67,9 @@ export default function PropertyDropDown() {
 
   return (
     <>
-      <label className="property">{t('landingPage.propertyLabel')}*</label>
+      <label className="property" data-testid="property-label">
+        {t("landingPage.propertyLabel")}*
+      </label>
       <FormControl className="property-select">
         <InputLabel
           shrink={selectedProperties.length > 0}
@@ -74,7 +80,7 @@ export default function PropertyDropDown() {
               : "")
           }
         >
-          {t('landingPage.propertySelectPlaceholder')}
+          {t("landingPage.propertySelectPlaceholder")}
         </InputLabel>
         <Select
           className="property-select"
@@ -87,6 +93,7 @@ export default function PropertyDropDown() {
               .map((value) => propertyNames.find((opt) => opt === value))
               .join(", ")
           }
+          style={{ paddingTop: "0.5rem" }}
           MenuProps={{
             PaperProps: {
               style: {
@@ -95,15 +102,44 @@ export default function PropertyDropDown() {
             },
           }}
         >
-          {propertyNames.map((option) => (
-            <MenuItem key={option} value={option}>
-              <Checkbox
-                checked={isOptionSelected(option)}
-                onClick={() => handleMenuItemClick(option)}
-              />
-              <span>{option}</span>
-            </MenuItem>
-          ))}
+          {propertyNames.map((option) =>
+            option === TEAM_HOTEL_ID ? (
+              <MenuItem
+                key={option}
+                value={option}
+                data-testid={`property-option-${option}`}
+              >
+                <Checkbox
+                  checked={isOptionSelected(option)}
+                  onClick={() => handleMenuItemClick(option)}
+                  data-testid={`property-checkbox-${option}`}
+                />
+                <span data-testid={`property-option-text-${option}`}>
+                  {option}
+                </span>
+              </MenuItem>
+            ) : (
+              <MenuItem
+                key={option}
+                value={option}
+                disabled
+                data-testid={`property-option-${option}`}
+              >
+                <Checkbox
+                  checked={isOptionSelected(option)}
+                  onClick={() => handleMenuItemClick(option)}
+                  data-testid={`property-checkbox-${option}`}
+                  disabled
+                />
+                <span
+                  data-testid={`property-option-text-${option}`}
+                  style={{ color: "grey" }}
+                >
+                  {option}
+                </span>
+              </MenuItem>
+            )
+          )}
         </Select>
       </FormControl>
     </>

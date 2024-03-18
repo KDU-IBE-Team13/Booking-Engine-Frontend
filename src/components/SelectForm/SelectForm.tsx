@@ -5,7 +5,10 @@ import RoomSelect from "../RoomSelect/RoomSelect";
 import Calendar from "../Calendar/Calendar";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import { FAILED_PROPERTY_RATES_FETCH_MESSAGE, NIGHTLY_RATE_ENDPOINT } from "../../constants/constants";
+import {
+  FAILED_PROPERTY_RATES_FETCH_MESSAGE,
+  NIGHTLY_RATE_ENDPOINT,
+} from "../../constants/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { fetchLandingPageConfig } from "../../redux/slices/landingPageConfigSlice";
@@ -15,15 +18,35 @@ import { IDate } from "../../types/IDate";
 
 export const SelectForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [propertyRates, setPropertyRates] = useState<{ [key: string]: number }>({});
+  const [propertyRates, setPropertyRates] = useState<{ [key: string]: number }>(
+    {}
+  );
+  const [rooms, setRooms] = useState<number>(1);
   const { t } = useTranslation();
 
-  const bannerImageURL = useSelector((state: RootState) => state.landingPageConfig.bannerImageURL);
-  const isGuestsDropdownEnabled = useSelector((state: RootState) => state.landingPageConfig.searchForm.guests.enabled);
-  const isRoomsDropdownEnabled = useSelector((state: RootState) => state.landingPageConfig.searchForm.rooms.enabled);
-  const selectedCurrency = useSelector((state: RootState) => state.currency.selectedCurrency);
-  const selectedCurrencySymbol = useSelector((state: RootState) => state.currency.selectedCurrencySymbol);
-  const exchangeRate = useSelector((state: RootState) => state.currency.exchangeRates[selectedCurrency]);
+  const bannerImageURL = useSelector(
+    (state: RootState) => state.landingPageConfig.bannerImageURL
+  );
+  const isGuestsDropdownEnabled = useSelector(
+    (state: RootState) => state.landingPageConfig.searchForm.guests.enabled
+  );
+  const isRoomsDropdownEnabled = useSelector(
+    (state: RootState) => state.landingPageConfig.searchForm.rooms.enabled
+  );
+  const selectedCurrency = useSelector(
+    (state: RootState) => state.currency.selectedCurrency
+  );
+  const selectedCurrencySymbol = useSelector(
+    (state: RootState) => state.currency.selectedCurrencySymbol
+  );
+  const exchangeRate = useSelector(
+    (state: RootState) => state.currency.exchangeRates[selectedCurrency]
+  );
+
+  const wheelchairAccessible = useSelector(
+    (state: RootState) =>
+      state.landingPageConfig.searchForm.wheelchairAccessible
+  );
 
   useEffect(() => {
     dispatch(fetchLandingPageConfig());
@@ -48,7 +71,8 @@ export const SelectForm = () => {
 
   const tileContent = ({ date }: IDate) => {
     const currentDate = new Date();
-    const currentDateISO = currentDate.toISOString().split("T")[0] + "T00:00:00.000Z";
+    const currentDateISO =
+      currentDate.toISOString().split("T")[0] + "T00:00:00.000Z";
     const nextDate = new Date(date);
     nextDate.setDate(nextDate.getDate() + 1);
     const nextDateISO = nextDate.toISOString().split("T")[0] + "T00:00:00.000Z";
@@ -59,33 +83,60 @@ export const SelectForm = () => {
     let convertedPrice;
 
     if (selectedCurrency === "USD") {
-        convertedPrice = price;
+      convertedPrice = price;
     } else {
-        if (price != null && exchangeRate != null) {
-          const tempConvertedPrice = (price * exchangeRate).toFixed(1);
-          if (tempConvertedPrice.length > 5) {
-              convertedPrice = Number(tempConvertedPrice).toPrecision(4);
-          } else {
-              convertedPrice = tempConvertedPrice;
-          }
+      if (price != null && exchangeRate != null) {
+        const tempConvertedPrice = (price * exchangeRate).toFixed(1);
+        if (tempConvertedPrice.length > 5) {
+          convertedPrice = Number(tempConvertedPrice).toPrecision(4);
         } else {
-            convertedPrice = null;
+          convertedPrice = tempConvertedPrice;
         }
+      } else {
+        convertedPrice = null;
+      }
     }
-      
-    return <p className="tileContentPrice">{convertedPrice != null ? `${selectedCurrencySymbol}${convertedPrice}` : "-"}</p>;
+
+    return (
+      <p className="tileContentPrice">
+        {convertedPrice != null
+          ? `${selectedCurrencySymbol}${convertedPrice}`
+          : "-"}
+      </p>
+    );
   };
 
   return (
     <SelectFormStyled backgroundimage={bannerImageURL}>
       <form className="searchForm">
         <PropertyDropDown />
-        <Calendar tileContent={tileContent} />
+        <Calendar tileContent={tileContent} propertyRates = {propertyRates} />
         <div className="roomsSpecification">
-          {isGuestsDropdownEnabled && <GuestDropdown />}
-          {isRoomsDropdownEnabled && <RoomSelect />}
+          {isGuestsDropdownEnabled && <GuestDropdown rooms={rooms} />}
+          {isRoomsDropdownEnabled && (
+            <RoomSelect rooms={rooms} setRooms={setRooms} />
+          )}
         </div>
-        <Button variant="contained" className="searchButton">{t('landingPage.search')}</Button>
+        {wheelchairAccessible && (
+          <div className="accessibilityCheckbox accessibleChair">
+            <input
+              type="checkbox"
+              id="accessibleChair"
+              name="accessibleChair"
+            />
+            <label>
+              <img
+                src="/wheelchair.png"
+                alt="wheelchair"
+                className="wheelChair-img"
+              />{" "}
+              {t("landingPage.wheelChairLabel")}
+            </label>
+          </div>
+        )}
+        <Button variant="contained" className="searchButton">
+          {t("landingPage.search")}
+        </Button>
       </form>
     </SelectFormStyled>
   );

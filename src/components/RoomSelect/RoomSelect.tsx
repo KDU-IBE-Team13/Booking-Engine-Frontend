@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   FormControl,
   MenuItem,
@@ -9,23 +8,26 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useTranslation } from "react-i18next";
 
-const RoomSelect = () => {
-  const [rooms, setRooms] = useState<number | "">(1);
+export interface RoomSelectProps {
+  rooms: number;
+  setRooms: React.Dispatch<React.SetStateAction<number>>;
+}
 
+const RoomSelect = ({ rooms, setRooms }: RoomSelectProps) => {
   const { t } = useTranslation();
 
   const roomOptions = useSelector(
     (state: RootState) => state.landingPageConfig.searchForm.rooms.options
-  )
+  );
 
-  const handleChange = (event: SelectChangeEvent<number | "">) => {
-    setRooms(event.target.value as number | "");
+  const handleChange = (event: SelectChangeEvent<number>) => {
+    setRooms(event.target.value as number);
   };
 
   return (
     <div>
       <FormControl>
-        <label className="property">{t('landingPage.roomsLabel')}</label>
+        <label className="property">{t("landingPage.roomsLabel")}</label>
         <Select
           value={rooms}
           onChange={handleChange}

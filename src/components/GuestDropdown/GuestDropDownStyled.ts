@@ -9,7 +9,7 @@ export const MenuItemWrapper = styled.div`
 export const MenuItemStyled = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 10rem;
+  width: 8.7rem;
   align-items: center;
   font-size: 1rem;
 
