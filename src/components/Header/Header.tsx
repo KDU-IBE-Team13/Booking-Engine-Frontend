@@ -77,7 +77,7 @@ const Header = () => {
   };
 
   return (
-    <StyledAppBar position="static">
+    <StyledAppBar>
       <StyledContainer maxWidth={false}>
         <StyledToolbar disableGutters>
           <StyledBox onClick={() => window.location.href = '/'}>

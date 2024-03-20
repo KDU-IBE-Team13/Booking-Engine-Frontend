@@ -17,8 +17,8 @@ export const StyledAppBar = styled(AppBar)`
   && {
     background-color: white;
     box-shadow: none;
-    border-bottom: 1px solid #000000;
     padding: 5px 0;
+    position: sticky;
   }
 `;
 
