@@ -17,7 +17,15 @@ interface Property {
   propertyName: string;
 }
 
-export default function PropertyDropDown() {
+interface PropertyDropDownProps {
+  selectedProperties: string[];
+  setSelectedProperties: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+export default function PropertyDropDown({
+  selectedProperties,
+  setSelectedProperties,
+}: PropertyDropDownProps) {
   const [propertyNames, setPropertyNames] = useState<string[]>([]);
 
   const { t } = useTranslation();
@@ -43,9 +51,9 @@ export default function PropertyDropDown() {
     fetchData();
   }, []);
 
-  const [selectedProperties, setSelectedProperties] = React.useState<string[]>(
-    []
-  );
+  // const [selectedProperties, setSelectedProperties] = React.useState<string[]>(
+  //   []
+  // );
 
   const handleChange = (event: SelectChangeEvent<string[]>) => {
     const value = event.target.value;

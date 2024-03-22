@@ -2,7 +2,7 @@ import moment from 'moment';
 import { WEEK_DAYS } from '../constants/constants';
 
 export const setWeekDays = (
-    locale: string | undefined,
+    _locale: string | undefined,
     date: Date
   ): string => {
     return WEEK_DAYS[date.getDay()];

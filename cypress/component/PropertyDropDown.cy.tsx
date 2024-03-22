@@ -1,3 +1,4 @@
+import { useState } from "react";
 import PropertyDropDown from "../../src/components/PropertyDropDown/PropertyDropDown";
 import store from "../../src/redux/store";
 import { Provider } from "react-redux";
@@ -7,9 +8,14 @@ describe("PropertyDropDown Component", () => {
     cy.intercept("GET", "/api/v1/property", { fixture: "properties.json" }).as(
       "getProperties"
     );
+
+    const [selectedProperties, setSelectedProperties] = useState<string[]>([]);
+    
     cy.mount(
       <Provider store={store}>
-        <PropertyDropDown />
+        <PropertyDropDown 
+        selectedProperties={selectedProperties}
+        setSelectedProperties={setSelectedProperties}/>
       </Provider>
     );
   });

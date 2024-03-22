@@ -80,7 +80,7 @@ export const StyledHamburgerIcon = styled.div`
     display: none;
     cursor: pointer;
 
-    @media (max-width: 767px) {
+    @media (max-width: 887px) {
       display: block;
     }
   }
@@ -93,7 +93,7 @@ export const StyledNavItemsContainer = styled(Box)`
     align-items: center;
     justify-content: space-between;
 
-    @media (max-width: 767px) {
+    @media (max-width: 887px) {
       display: none;
 
       &.mobile-menu-open {
@@ -148,5 +148,20 @@ export const StyledLoginButton = styled(Button)`
 export const TitleTypography = styled(Typography)`
   && {
     font-size: 1.2rem;
+  }
+`;
+
+export const StyledBookingbutton = styled(Button)`
+  && {
+    background-color: white;
+    color: #26266d;
+    box-shadow: none;
+    font-family: "Lato", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+
+    &:hover {
+      background-color: transparent;
+    }
   }
 `;

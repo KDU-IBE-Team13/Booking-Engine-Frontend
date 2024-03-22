@@ -21,6 +21,12 @@ export const SelectForm = () => {
   const [propertyRates, setPropertyRates] = useState<{ [key: string]: number }>(
     {}
   );
+  const [selectedProperties, setSelectedProperties] = useState<string[]>(
+    []
+  );
+
+  const [checkInDate, setCheckInDate] = useState<Date | null>(null);
+  const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
   const [rooms, setRooms] = useState<number>(1);
   const { t } = useTranslation();
 
@@ -109,8 +115,16 @@ export const SelectForm = () => {
   return (
     <SelectFormStyled backgroundimage={bannerImageURL}>
       <form className="searchForm">
-        <PropertyDropDown />
-        <Calendar tileContent={tileContent} propertyRates = {propertyRates} />
+        <PropertyDropDown selectedProperties={selectedProperties}
+         setSelectedProperties={setSelectedProperties}/>
+        <Calendar
+          tileContent={tileContent}
+          propertyRates={propertyRates}
+          checkInDate={checkInDate}
+          setCheckInDate={setCheckInDate}
+          checkOutDate={checkOutDate}
+          setCheckOutDate={setCheckOutDate}
+        />
         <div className="roomsSpecification">
           {isGuestsDropdownEnabled && <GuestDropdown rooms={rooms} />}
           {isRoomsDropdownEnabled && (
@@ -134,7 +148,13 @@ export const SelectForm = () => {
             </label>
           </div>
         )}
-        <Button variant="contained" className="searchButton">
+        <Button
+          variant="contained"
+          className="searchButton"
+          disabled={
+            !checkInDate || !checkOutDate || selectedProperties.length === 0
+          }
+        >
           {t("landingPage.search")}
         </Button>
       </form>

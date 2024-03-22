@@ -1,6 +1,7 @@
 import BookingDatesCalendar from "../../src/components/Calendar/Calendar";
 import { Provider } from "react-redux";
 import store from "../../src/redux/store";
+import { SetStateAction } from "react";
 
 const placeholderTileContent = ({ date }: { date: Date }) => (
   <div>'$'{date.toLocaleDateString()}</div>
@@ -16,8 +17,11 @@ describe("<BookingDatesCalendar />", () => {
       <Provider store={store}>
         <BookingDatesCalendar
           tileContent={placeholderTileContent}
-          propertyRates={propertyRates}
-        />
+          propertyRates={propertyRates} checkInDate={null} setCheckInDate={function (_value: SetStateAction<Date | null>): void {
+            throw new Error("Function not implemented.");
+          } } checkOutDate={null} setCheckOutDate={function (_value: SetStateAction<Date | null>): void {
+            throw new Error("Function not implemented.");
+          } }        />
       </Provider>
     );
   });

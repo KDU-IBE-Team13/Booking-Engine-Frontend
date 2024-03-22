@@ -18,6 +18,7 @@ i18n
             footer: "All rights reserved.",
             headerTitle: "Internet Booking Engine",
             login: "Login",
+            MyBookings: "MY BOOKINGS",
           },
           landingPage: {
             search: "Search",
@@ -50,6 +51,7 @@ i18n
             footer: "Todos los derechos reservados.",
             headerTitle: "Motor de Reservas en Internet",
             login: "Iniciar sesión",
+            MyBookings: "MIS RESERVAS",
           },
           landingPage: {
             search: "Buscar",
@@ -82,6 +84,7 @@ i18n
             footer: "Tous droits réservés.",
             headerTitle: "Moteur de réservation en ligne",
             login: "Connexion",
+            MyBookings: "MES RÉSERVATIONS",
           },
           landingPage: {
             search: "Rechercher",
@@ -115,6 +118,7 @@ i18n
             footer: "Alle Rechte vorbehalten.",
             headerTitle: "Internet-Buchungsmaschine",
             login: "Anmelden",
+            MyBookings: "MEINE BUCHUNGEN",
           },
           landingPage: {
             search: "Suchen",

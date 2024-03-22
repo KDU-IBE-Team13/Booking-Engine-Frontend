@@ -12,6 +12,7 @@ import {
   StyledLoginButton,
   TitleTypography,
   StyledContainer,
+  StyledBookingbutton,
 } from "./HeaderStyles";
 
 import companyLogo from "../../assets/company-logo.png";
@@ -142,11 +143,19 @@ const Header = () => {
             </svg>
           </StyledHamburgerIcon>
 
+         
+
           <StyledNavItemsContainer
             className={`nav-items-container ${
               isMobileMenuOpen ? "mobile-menu-open" : ""
             }`}
           >
+             <StyledLoginContainer>
+              <StyledBookingbutton variant="contained" color="primary">
+                {t("description.MyBookings")}
+              </StyledBookingbutton>
+            </StyledLoginContainer>
+
             <StyledNavItem onClick={handleLanguageClick}>
               <img src={languageIcon} alt="language" />
               <Typography variant="caption" className="language-text">
@@ -168,7 +177,6 @@ const Header = () => {
                   </MenuItem>
                 ))}
             </Menu>
-
             <StyledNavItem onClick={handleCurrencyClick}>
               <Typography variant="caption" className="currency-text">
                 {selectedCurrencySymbol} {selectedCurrency}

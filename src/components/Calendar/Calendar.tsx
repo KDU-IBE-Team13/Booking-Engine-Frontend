@@ -15,11 +15,19 @@ import { useTranslation } from "react-i18next";
 interface CalendarProps {
   tileContent: (args: { date: Date }) => JSX.Element | null;
   propertyRates: { [key: string]: number };
+  checkInDate: Date | null;
+  setCheckInDate: React.Dispatch<React.SetStateAction<Date | null>>;
+  checkOutDate: Date | null;
+  setCheckOutDate: React.Dispatch<React.SetStateAction<Date | null>>;
 }
 
 const BookingDatesCalendar: React.FC<CalendarProps> = ({
   tileContent,
   propertyRates,
+  checkInDate,
+  setCheckInDate,
+  checkOutDate,
+  setCheckOutDate,
 }) => {
   const lengthOfStay = useSelector(
     (state: RootState) => state.landingPageConfig.searchForm.lengthOfStay
@@ -38,9 +46,6 @@ const BookingDatesCalendar: React.FC<CalendarProps> = ({
   const [isCalendar, setIsCalendar] = useState(false);
   const [showDoubleView, setShowDoubleView] = useState(true);
   const [error, setError] = useState("");
-
-  const [checkInDate, setCheckInDate] = useState<Date | null>(null);
-  const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
 
   const [minimumPriceMessage, setMinimumPriceMessage] = useState("");
 
@@ -64,7 +69,7 @@ const BookingDatesCalendar: React.FC<CalendarProps> = ({
 
         console.log(minimumPriceMessage);
         setMinimumPriceMessage(
-          t('landingPage.priceLabel') +
+          t("landingPage.priceLabel") +
             `${selectedCurrencySymbol}` +
             `${averageAmount.toFixed(2)}`
         );
