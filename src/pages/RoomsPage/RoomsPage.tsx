@@ -9,7 +9,6 @@ export const RoomsPage = () => {
   }, []); 
 
   const routeChange = () => { 
-    // const path = `/room-results`;
 
     const checkInDate = localStorage.getItem('checkInDate');
     const checkOutDate = localStorage.getItem('checkOutDate');
@@ -33,16 +32,14 @@ export const RoomsPage = () => {
     const newUrl = `${window.location.pathname}${searchParams.toString()}`;
     window.history.replaceState({}, '', newUrl);
 
-    // navigate(path + searchParams);
   };
 
   return (
     <>
-      {/* <Header /> */}
+      <Header />
       <RoomsContainer />
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };
 
-// export default RoomsPage;

@@ -8,7 +8,6 @@ const beds: number[] = [0, 1, 2, 3, 4, 5];
 const location = useLocation();
 const [selectedBeds, setSelectedBeds] = useState<number>(0);
 
-// Retrieve beds count from URL params or localStorage
 useEffect(() => {
   const searchParams = new URLSearchParams(location.search);
   const bedsParam = searchParams.get('beds');
@@ -17,15 +16,12 @@ useEffect(() => {
   setSelectedBeds(beds);
 }, [location.search]);
 
-// Function to handle bed selection change
 const handleBedChange = (event: SelectChangeEvent<number>) => {
   const beds = Number(event.target.value);
   setSelectedBeds(beds);
 
-  // Update localStorage
   localStorage.setItem('beds', beds.toString());
 
-  // Update URL parameters
   const searchParams = new URLSearchParams(location.search);
   searchParams.set('beds', beds.toString());
   const newUrl = `${window.location.pathname}?${searchParams.toString()}`;

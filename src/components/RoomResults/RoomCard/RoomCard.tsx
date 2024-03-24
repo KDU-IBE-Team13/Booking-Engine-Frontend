@@ -51,11 +51,6 @@ export default function RoomCard({carouselImg1, carouselImg2, carouselImg3}: IRo
             <ResortName>
                 Long Beautiful Resort Name
             </ResortName>
-                {/* <StarRating>
-                <img src={starIcon} alt="star" />
-                <Typography variant="body1">3.5</Typography>
-                </StarRating>
-                <div>128 reviews</div> */}
             <NewPropertyLabel>New property</NewPropertyLabel>
         </HeaderWrapper>
         <LocationWrapper>

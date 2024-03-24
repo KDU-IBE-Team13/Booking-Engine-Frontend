@@ -8,6 +8,7 @@ export const FooterContainer = styled.footer`
   position: sticky;
   bottom: 0;
   width: 100%;
+  z-index: 999;
 `;
 
 export const StyledContainer = styled (Container)`

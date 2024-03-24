@@ -1,4 +1,3 @@
-// import LandingPage from "./pages/LandingPage/LandingPage";
 import { AppContainer } from "./AppStyles";
 import { Provider } from 'react-redux';
 import store from './redux/store';

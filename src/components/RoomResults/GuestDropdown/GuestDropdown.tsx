@@ -90,19 +90,8 @@ const GuestDropdown = () => {
   const kidsAgeRange = kidsOption?.ageRange;
 
   useEffect(() => {
-    const urlSearchParams = new URLSearchParams(location.search);
-
-    urlSearchParams.set('adults', guestCounts.adults.toString());
-    urlSearchParams.set('teens', guestCounts.teens.toString());
-    urlSearchParams.set('kids', guestCounts.kids.toString());
-
-    console.log(urlSearchParams)
-  
-    const newUrl = `${window.location.pathname}?${urlSearchParams.toString()}`;
-    window.history.replaceState({}, '', newUrl);
-
     localStorage.setItem('guestCounts', JSON.stringify(guestCounts));
-  }, [guestCounts, location.search]);
+  }, [guestCounts]);
   
 
   const handleCountChange = (type: keyof GuestCounts, value: number) => {
@@ -145,7 +134,6 @@ const GuestDropdown = () => {
           renderValue={() => <GuestMenuInput />}
           displayEmpty={true}
           defaultValue=""
-            // onChange={handleChange}
           IconComponent={KeyboardArrowDownIcon}
         >
           {isAdultsOptionEnabled && 

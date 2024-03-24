@@ -8,4 +8,12 @@ export const RoomSearchFormWrapper = styled.div`
   gap: 20px;
   width: 90%;
   margin: 0 auto;
-`
+
+  @media screen and (max-width: 1300px) {
+    flex-direction: column;
+
+    & > * {
+      width: 100%;
+    }
+  }
+`;

@@ -16,6 +16,7 @@ export const BookingDatesCalendarStyled = styled.div`
     color: black;
     border: 1px solid #c1c2c2;
     border-radius: 0.25rem;
+    width: 100%;
   }
 `;
 
@@ -29,6 +30,7 @@ export const VerticalLine = styled.div`
 export const DoubleCalendarStyled = styled.div`
   border-radius: 0.3125rem;
   position: absolute;
+  right: 50px;
   z-index: 999;
   background-color: white;
   border: 1px solid #858685;

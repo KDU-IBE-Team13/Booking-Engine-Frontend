@@ -7,6 +7,11 @@ export const StyledButton = styled(Button)`
         color: #fff;
         padding: 0 2rem;
         font-weight: 800;
+
+        @media screen and (max-width: 1300px){
+            padding: 1rem;
+        }
+
     }
     
 `

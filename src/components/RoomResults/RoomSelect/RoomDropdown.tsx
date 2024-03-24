@@ -33,8 +33,6 @@ export const RoomDropdown = () => {
     const urlSearchParams = new URLSearchParams(location.search);
 
     urlSearchParams.set('rooms', selectedRoom.toString());
-
-    console.log(urlSearchParams)
   
     const newUrl = `${window.location.pathname}?${urlSearchParams.toString()}`;
     window.history.replaceState({}, '', newUrl);

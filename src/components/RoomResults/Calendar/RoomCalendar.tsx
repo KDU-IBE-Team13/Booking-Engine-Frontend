@@ -28,10 +28,6 @@ const RoomCalendar: React.FC<CalendarProps> = () => {
   const endDateLocalStr = localStorage.getItem('checkOutDate');
   const endDateLocal = endDateLocalStr ? new Date(endDateLocalStr) : null;
 
-  console.log('local date')
-  console.log(startDateLocal, endDateLocal)
-
-
   const lengthOfStay = useSelector(
     (state: RootState) => state.landingPageConfig.searchForm.lengthOfStay
   );
@@ -93,6 +89,7 @@ const RoomCalendar: React.FC<CalendarProps> = () => {
   };
   
   const setBookingDates = () => {
+
     if (bookingStartDate && bookingEndDate) {
         setCheckInDate(bookingStartDate);
         setCheckOutDate(bookingEndDate);
@@ -110,6 +107,13 @@ const RoomCalendar: React.FC<CalendarProps> = () => {
         const searchParams = new URLSearchParams(location.search);
         searchParams.set('checkInDate', nextBookingStartDate.toISOString().split('T')[0]);
         searchParams.set('checkOutDate', nextBookingEndDate.toISOString().split('T')[0]);
+
+        const guestCounts = localStorage.getItem('guestCounts');
+        const guestCountsJSON = guestCounts? JSON.parse(guestCounts) : null;
+
+        searchParams.set('adults', guestCountsJSON?.adults.toString());
+        searchParams.set('teens', guestCountsJSON?.teens.toString());
+        searchParams.set('kids', guestCountsJSON?.kids.toString());
     
         window.history.replaceState({}, '', `${window.location.pathname}?${searchParams}`);
     }
@@ -134,11 +138,10 @@ useEffect(() => {
 const CalendarStartMenuInput = ({date}: IRoomDate) => {
   return (
     <Box>
-      <Typography fontSize={{ md: "0.7rem", xs: "0.875rem", lg: "0.875rem" }} color={"#858685"} padding={"0 4rem 0 0"}>
+      <Typography fontSize={{ md: "0.8rem", xs: "0.75rem", lg: "0.875rem" }} color={"#858685"} padding={{md: "0 4rem 0 0", xs: "0rem"}}>
         {"Check in between"}
       </Typography>
-      <>{console.log("this "+ date?.toDateString())}</>
-      <Typography fontWeight={700} padding={"0 4rem 0 0"}>{date? date.toDateString(): `Any Date`}</Typography>
+      <Typography fontSize={{ md: "0.8rem", xs: "0.75rem", lg: "0.875rem" }} fontWeight={700} padding={{md: "0 4rem 0 0", xs: "0rem"}}>{date? date.toDateString(): `Any Date`}</Typography>
     </Box>
   );
 };
@@ -147,10 +150,10 @@ const CalendarStartMenuInput = ({date}: IRoomDate) => {
 const CalendarEndMenuInput = ({date}: IRoomDate) => {
   return (
     <Box>
-      <Typography fontSize={{ md: "0.7rem", xs: "0.875rem", lg: "0.875rem" }} color={"#858685"} padding={"0 4rem 0 2rem"}>
+      <Typography fontSize={{ md: "0.8rem", xs: "0.75rem", lg: "0.875rem" }} color={"#858685"} padding={{md: "0 4rem 0 2rem", xs: "0rem"}}>
         {"Check out between"}
       </Typography>
-      <Typography fontWeight={700} padding={"0 4rem 0 2rem"}>{date? date.toDateString(): `Any Date`}</Typography>
+      <Typography fontSize={{ md: "0.8rem", xs: "0.75rem", lg: "0.875rem" }} fontWeight={700} padding={{md: "0 4rem 0 2rem", xs: "0rem"}}>{date? date.toDateString(): `Any Date`}</Typography>
     </Box>
   );
 };
@@ -173,7 +176,6 @@ const CalendarEndMenuInput = ({date}: IRoomDate) => {
             selectRange
             minDate={present_date}
             formatShortWeekday={setWeekDays}
-            // tileContent={tileContent}
             showNeighboringMonth={false}
             showFixedNumberOfWeeks={false}
           />

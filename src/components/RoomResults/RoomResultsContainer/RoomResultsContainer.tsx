@@ -12,10 +12,8 @@ const RoomsContainer = () => {
     <RoomsContainerWrapper>
       <RoomBanner />
       <CustomStepper />
-      {/* <Filter /> */}
       <RoomSearchForm />
       <ResultContainer />
-      {/* <RoomResultRoomSelect /> */}
     </RoomsContainerWrapper>
   );
 };
