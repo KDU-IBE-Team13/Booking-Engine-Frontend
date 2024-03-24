@@ -55,6 +55,10 @@ export const StyledMenuItem = styled(MenuItem)`
 
 export const StyledCheckbox = styled(Checkbox)`
   && {
-    /* Add any custom styles for Checkbox */
   }
 `;
+
+export const OptionText = styled.div`
+  vertical-align: middle;
+  line-height: 40px;
+`

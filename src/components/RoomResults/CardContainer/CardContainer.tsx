@@ -38,6 +38,7 @@ const CardContainer = () => {
     const guestCounts = guestCountsString ? JSON.parse(guestCountsString) : {};
     const guestCountNum = guestCounts.adults + guestCounts.teens + guestCounts.kids;
     const bedCount = Number(localStorage.getItem('beds'));
+    const currentPage = 1;
 
     dispatch(fetchRoomsData(checkInDateISO, checkOutDateISO, propertyId, roomCount, guestCountNum,currentPage, bedCount));
   }, [dispatch, currentPage]);

@@ -3,7 +3,7 @@ import { BannerContainer, BannerContainerImg } from "./RoomBannerStyles";
 const RoomBanner = () => {
   return (
     <BannerContainer>
-        <BannerContainerImg src={roomBannerImg} alt="banner" />
+        <BannerContainerImg data-testid="banner-img" src={roomBannerImg} alt="banner" />
     </BannerContainer>
   );
 };

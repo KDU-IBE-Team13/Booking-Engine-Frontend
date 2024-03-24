@@ -4,7 +4,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import React, { useState } from "react";
-import { StyledBox } from "./FilterStyled";
+import { OptionText, StyledBox } from "./FilterStyled";
 import {
   StyledAccordion,
   StyledAccordionSummary,
@@ -21,19 +21,19 @@ const Filter = () => {
     {
       filterName: 'Bed Type',
       show: true,
-      options: ['Option 1', 'Option 2', 'Option 3'],
-      selectedOptions: ['Option 1'], 
+      options: ['King', 'Queen'],
+      selectedOptions: [], 
     },
     {
       filterName: 'Room Type',
       show: true,
-      options: ['Option A', 'Option B', 'Option C'],
+      options: ['Deluxe', 'Suite'],
       selectedOptions: [], 
     },
     {
       filterName: 'Price',
       show: true,
-      options: ['Option X', 'Option Y', 'Option Z'],
+      options: ['<$100', '<$200'],
       selectedOptions: [],
     },
   ];
@@ -73,6 +73,7 @@ const Filter = () => {
                                 disabled={false}
                                 checked={filter.selectedOptions?.includes(option)}
                               />
+                              <OptionText>{option}</OptionText>
                             </ListItemIcon>
                           </MenuItem>
                         );
