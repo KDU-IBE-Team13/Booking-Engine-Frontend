@@ -5,6 +5,7 @@ export const CardContainerSection = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     flex-grow: 2;
+    width: 100%;
 `
 
 export const CardWrapper = styled.div`

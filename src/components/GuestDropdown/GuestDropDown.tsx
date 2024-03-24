@@ -27,6 +27,9 @@ const GuestDropdown = (rooms: GuestSelectProps) => {
     return storedCounts ? JSON.parse(storedCounts) : { adults: 1, teens: 0, kids: 0 };
   });
 
+  localStorage.setItem("guestCounts", JSON.stringify(guestCounts));
+
+
   const { t } = useTranslation();
 
   const adultsOption = useSelector(
@@ -72,7 +75,8 @@ const GuestDropdown = (rooms: GuestSelectProps) => {
 
     if (totalCount + value <= MAX_GUEST_COUNT && updatedCount >= 0) {
       setGuestCounts((prevCounts) => {
-        const updatedCounts = { ...prevCounts, [type]: Math.max(prevCounts[type] + value, 0) };
+        const updatedCounts = { ...prevCounts, [type]: updatedCount };
+        console.log(updatedCounts);
         localStorage.setItem("guestCounts", JSON.stringify(updatedCounts));
         return updatedCounts;
       });

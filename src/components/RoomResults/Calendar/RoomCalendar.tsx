@@ -12,6 +12,11 @@ import { useLocation } from "react-router-dom";
 
 interface CalendarProps {
   tileContent: (args: { date: Date }) => JSX.Element | null;
+  propertyRates: { [key: string]: number };
+  checkInDate: Date | null;
+  setCheckInDate: React.Dispatch<React.SetStateAction<Date | null>>;
+  checkOutDate: Date | null;
+  setCheckOutDate: React.Dispatch<React.SetStateAction<Date | null>>;
 }
 
 interface IRoomDate {
@@ -19,7 +24,9 @@ interface IRoomDate {
 }
 
 
-const RoomCalendar: React.FC<CalendarProps> = () => {
+const RoomCalendar: React.FC<CalendarProps> = ({
+  tileContent
+}) => {
   
   const location = useLocation();
 
@@ -103,19 +110,6 @@ const RoomCalendar: React.FC<CalendarProps> = () => {
 
         localStorage.setItem('checkInDate', nextBookingStartDate.toISOString().split('T')[0]);
         localStorage.setItem('checkOutDate', nextBookingEndDate.toISOString().split('T')[0]);
-
-        const searchParams = new URLSearchParams(location.search);
-        searchParams.set('checkInDate', nextBookingStartDate.toISOString().split('T')[0]);
-        searchParams.set('checkOutDate', nextBookingEndDate.toISOString().split('T')[0]);
-
-        const guestCounts = localStorage.getItem('guestCounts');
-        const guestCountsJSON = guestCounts? JSON.parse(guestCounts) : null;
-
-        searchParams.set('adults', guestCountsJSON?.adults.toString());
-        searchParams.set('teens', guestCountsJSON?.teens.toString());
-        searchParams.set('kids', guestCountsJSON?.kids.toString());
-    
-        window.history.replaceState({}, '', `${window.location.pathname}?${searchParams}`);
     }
 };
 
@@ -176,6 +170,7 @@ const CalendarEndMenuInput = ({date}: IRoomDate) => {
             selectRange
             minDate={present_date}
             formatShortWeekday={setWeekDays}
+            tileContent={tileContent}
             showNeighboringMonth={false}
             showFixedNumberOfWeeks={false}
           />

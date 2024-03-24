@@ -9,6 +9,13 @@ export const RoomSearchFormWrapper = styled.div`
   width: 90%;
   margin: 0 auto;
 
+  .tileContentPrice {
+    text-align: center;
+    margin: 0;
+    font-weight: 400;
+    font-size: 0.875rem;
+  }
+
   @media screen and (max-width: 1300px) {
     flex-direction: column;
 

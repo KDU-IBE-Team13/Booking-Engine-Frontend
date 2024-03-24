@@ -5,6 +5,7 @@ export const ResultSectionContainer = styled.div`
     display: flex;
     justify-content: space-around;
     margin: 0 auto;
+    width: 90%;
 
     @media screen and (max-width: 1300px) {
         flex-direction: column;

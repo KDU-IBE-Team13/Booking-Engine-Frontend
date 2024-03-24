@@ -30,12 +30,6 @@ export const RoomDropdown = () => {
   const [selectedRoom, setSelectedRoom] = useState<string | number>(roomCountParam);
 
   useEffect(() => {
-    const urlSearchParams = new URLSearchParams(location.search);
-
-    urlSearchParams.set('rooms', selectedRoom.toString());
-  
-    const newUrl = `${window.location.pathname}?${urlSearchParams.toString()}`;
-    window.history.replaceState({}, '', newUrl);
 
     localStorage.setItem('roomCount', selectedRoom.toString());
   }, [selectedRoom, location.search]);

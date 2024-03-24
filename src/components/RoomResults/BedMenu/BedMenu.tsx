@@ -4,9 +4,10 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { FormControlStyled, MenuItemStyled } from "./BedMenuStyles";
 import { useLocation } from "react-router-dom";
 const BedMenu = () => {
-const beds: number[] = [0, 1, 2, 3, 4, 5];
+const beds: number[] = [1, 2, 3, 4, 5];
 const location = useLocation();
-const [selectedBeds, setSelectedBeds] = useState<number>(0);
+const [selectedBeds, setSelectedBeds] = useState<number>(1);
+
 
 useEffect(() => {
   const searchParams = new URLSearchParams(location.search);
@@ -22,10 +23,6 @@ const handleBedChange = (event: SelectChangeEvent<number>) => {
 
   localStorage.setItem('beds', beds.toString());
 
-  const searchParams = new URLSearchParams(location.search);
-  searchParams.set('beds', beds.toString());
-  const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
-  window.history.replaceState({}, '', newUrl);
 };
 
 
@@ -35,7 +32,7 @@ const handleBedChange = (event: SelectChangeEvent<number>) => {
         <Typography fontSize={{ md: "0.7rem", xs: "0.875rem", lg: "0.875rem" }} color={"#858685"}>
           {"Beds"}
         </Typography>
-        <Typography fontWeight={700}>0</Typography>
+        <Typography fontWeight={700}>{selectedBeds}</Typography>
       </Box>
     );
   };

@@ -162,7 +162,7 @@ export const SelectForm = () => {
         <div className="roomsSpecification">
           {isGuestsDropdownEnabled && <GuestDropdown rooms={rooms} />}
           {isRoomsDropdownEnabled && (
-            <RoomSelect rooms={rooms} setRooms={setRooms} />
+            <RoomSelect />
           )}
         </div>
         {wheelchairAccessible && (
@@ -188,6 +188,7 @@ export const SelectForm = () => {
           disabled={
             !checkInDate || !checkOutDate || selectedProperties.length === 0
           }
+          onClick={routeChange}
         >
           {t("landingPage.search")}
         </Button>
