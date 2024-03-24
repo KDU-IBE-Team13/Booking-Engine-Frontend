@@ -1,9 +1,37 @@
 import { Box, FormControl, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { FormControlStyled, MenuItemStyled } from "./BedMenuStyles";
+import { useLocation } from "react-router-dom";
 const BedMenu = () => {
-const beds = [0, 1, 2, 3, 4, 5];
+const beds: number[] = [0, 1, 2, 3, 4, 5];
+const location = useLocation();
+const [selectedBeds, setSelectedBeds] = useState<number>(0);
+
+// Retrieve beds count from URL params or localStorage
+useEffect(() => {
+  const searchParams = new URLSearchParams(location.search);
+  const bedsParam = searchParams.get('beds');
+  const bedsLocal = localStorage.getItem('beds');
+  const beds = bedsParam ? Number(bedsParam) : (bedsLocal ? Number(bedsLocal) : 0);
+  setSelectedBeds(beds);
+}, [location.search]);
+
+// Function to handle bed selection change
+const handleBedChange = (event: SelectChangeEvent<number>) => {
+  const beds = Number(event.target.value);
+  setSelectedBeds(beds);
+
+  // Update localStorage
+  localStorage.setItem('beds', beds.toString());
+
+  // Update URL parameters
+  const searchParams = new URLSearchParams(location.search);
+  searchParams.set('beds', beds.toString());
+  const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+  window.history.replaceState({}, '', newUrl);
+};
+
 
   const BedMenuInput = () => {
     return (
@@ -26,8 +54,8 @@ const beds = [0, 1, 2, 3, 4, 5];
         }}
         renderValue={() => <BedMenuInput />}
         displayEmpty={true}
-        defaultValue=""
-        // onChange={handleChange}
+        defaultValue={selectedBeds}
+        onChange={handleBedChange}
         IconComponent={KeyboardArrowDownIcon}
       >
         {beds.map((bed) => {

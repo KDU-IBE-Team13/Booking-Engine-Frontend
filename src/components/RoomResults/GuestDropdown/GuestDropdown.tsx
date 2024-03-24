@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MenuItem, Box, Typography, FormControl } from "@mui/material";
-import { MenuItemWrapper, MenuItemStyled, GuestDropdownStyled, StyledTextField } from "./GuestDropdownStyled";
+import { MenuItemWrapper, MenuItemStyled, GuestDropdownStyled, StyledSelectField } from "./GuestDropdownStyled";
 import { RootState } from "../../../redux/store";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useLocation } from "react-router-dom";
 
 
 interface GuestCounts {
@@ -14,10 +15,55 @@ interface GuestCounts {
 }
 
 const GuestDropdown = () => {
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+  const adultCountParamStr = searchParams.get('adults');
+  const teenCountParamStr = searchParams.get('teens');
+  const kidCountParamStr = searchParams.get('kids');
+
+  const guestCountsString = localStorage.getItem('guestCounts');
+  const guestCountsLocal = guestCountsString ? JSON.parse(guestCountsString) : {};
+
+  let adultCountParam;
+  let teenCountParam;
+  let kidCountParam;
+
+  if(adultCountParamStr)
+  {
+    adultCountParam = Number(searchParams.get('adults'));
+    localStorage.setItem('guestCounts', JSON.stringify({...guestCountsLocal, adults: adultCountParam}));
+  }
+  else
+  {
+    adultCountParam = guestCountsLocal?.["adults"] ? guestCountsLocal["adults"] : 1;
+  }
+
+  if(teenCountParamStr)
+  {
+    teenCountParam = Number(searchParams.get('teens'));
+    localStorage.setItem('guestCounts', JSON.stringify({...guestCountsLocal, teens: teenCountParam}));
+  }
+  else
+  {
+    teenCountParam = guestCountsLocal?.["teens"] ? guestCountsLocal["teens"] : 0;
+  }
+
+  if(kidCountParamStr)
+  {
+    kidCountParam = Number(searchParams.get('kids'));
+    localStorage.setItem('guestCounts', JSON.stringify({...guestCountsLocal, adults: kidCountParam}));
+  }
+  else
+  {
+    kidCountParam = guestCountsLocal?.["kids"] ? guestCountsLocal["kids"] : 0;
+  }
+
+
   const [guestCounts, setGuestCounts] = useState<GuestCounts>({
-    adults: 1,
-    teens: 0,
-    kids: 0,
+    adults: adultCountParam,
+    teens: teenCountParam,
+    kids: kidCountParam,
   });
 
   const { t } = useTranslation();
@@ -42,24 +88,33 @@ const GuestDropdown = () => {
 
   const isKidsOptionEnabled = kidsOption?.enabled;
   const kidsAgeRange = kidsOption?.ageRange;
-  
 
-  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  useEffect(() => {
+    const urlSearchParams = new URLSearchParams(location.search);
+
+    urlSearchParams.set('adults', guestCounts.adults.toString());
+    urlSearchParams.set('teens', guestCounts.teens.toString());
+    urlSearchParams.set('kids', guestCounts.kids.toString());
+
+    console.log(urlSearchParams)
+  
+    const newUrl = `${window.location.pathname}?${urlSearchParams.toString()}`;
+    window.history.replaceState({}, '', newUrl);
+
+    localStorage.setItem('guestCounts', JSON.stringify(guestCounts));
+  }, [guestCounts, location.search]);
+  
 
   const handleCountChange = (type: keyof GuestCounts, value: number) => {
     setGuestCounts((prevCounts) => ({
       ...prevCounts,
       [type]: Math.max(prevCounts[type] + value, 0),
     }));
+    localStorage.setItem('guestCounts', JSON.stringify(guestCounts));
+
   };
 
-  // const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
 
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
 
   const GuestMenuInput = () => {
     return (
@@ -81,86 +136,70 @@ const GuestDropdown = () => {
   return (
     <GuestDropdownStyled>
       <FormControl fullWidth>
-      <StyledTextField
-        sx={{
-            "& .MuiSelect-select": {
-              padding: "0.7rem",
-            },
-        }}
-        renderValue={() => <GuestMenuInput />}
-        displayEmpty={true}
-        defaultValue=""
-          // onChange={handleChange}
-        IconComponent={KeyboardArrowDownIcon}
-      >
-      {/* <Menu
-        id="guest-menu"
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-      > */}
-        {isAdultsOptionEnabled && 
-          <MenuItem>
-            <MenuItemWrapper className="menu-item">
-              <MenuItemStyled>
-                <div className="guest">{t('landingPage.adultsLabel')}</div>
-                <div>
-                  <button onClick={() => handleCountChange("adults", -1)}>-</button>
-                  <span>{guestCounts.adults}</span>
-                  <button onClick={() => handleCountChange("adults", 1)}>+</button>
-                </div>
-              </MenuItemStyled>
-                <div className="age-range">{`${t('landingPage.ageRangeLabel')} ${adultsAgeRange}`}</div>
-            </MenuItemWrapper>
-          </MenuItem>
-        }
-
-        {isTeensOptionEnabled &&
-          <MenuItem>
-            <MenuItemWrapper className="menu-item">
-              <MenuItemStyled>
-                <div className="guest">{t('landingPage.teensLabel')}</div>
+        <StyledSelectField
+          sx={{
+              "& .MuiSelect-select": {
+                padding: "0.7rem",
+              },
+          }}
+          renderValue={() => <GuestMenuInput />}
+          displayEmpty={true}
+          defaultValue=""
+            // onChange={handleChange}
+          IconComponent={KeyboardArrowDownIcon}
+        >
+          {isAdultsOptionEnabled && 
+            <MenuItem>
+              <MenuItemWrapper className="menu-item">
+                <MenuItemStyled>
+                  <div className="guest">{t('landingPage.adultsLabel')}</div>
                   <div>
-                    <button onClick={() => handleCountChange("teens", -1)}>-</button>
-                    <span>{guestCounts.teens}</span>
-                    <button onClick={() => handleCountChange("teens", 1)}>+</button>
+                    <button onClick={(e) => { e.stopPropagation(); handleCountChange("adults", -1); }}>-</button>
+                    <span>{guestCounts.adults}</span>
+                    <button onClick={(e) => { e.stopPropagation(); handleCountChange("adults", 1); }}>+</button>
                   </div>
-              </MenuItemStyled>
-                <div className="age-range">{`${t('landingPage.ageRangeLabel')} ${teensAgeRange}`}</div>
-            </MenuItemWrapper>
-          </MenuItem>
-        }
-        
-        {isKidsOptionEnabled &&
-          <MenuItem>
-            <MenuItemWrapper className="menu-item">
-              <MenuItemStyled>
-              <div className="guest">{t('landingPage.kidsLabel')}</div>
-                <div>
-                  <button onClick={() => handleCountChange("kids", -1)}>
-                    -
-                  </button>
-                  <span>{guestCounts.kids}</span>
-                  <button onClick={() => handleCountChange("kids", 1)}>
-                    +
-                  </button>
-                </div>
-              </MenuItemStyled>
-                <div className="age-range">{`${t('landingPage.ageRangeLabel')} ${kidsAgeRange}`}</div>
-            </MenuItemWrapper>
-          </MenuItem>
-        }
-        
-      {/* </Menu> */}
-      </StyledTextField>
+                </MenuItemStyled>
+                  <div className="age-range">{`${t('landingPage.ageRangeLabel')} ${adultsAgeRange}`}</div>
+              </MenuItemWrapper>
+            </MenuItem>
+          }
+
+          {isTeensOptionEnabled &&
+            <MenuItem>
+              <MenuItemWrapper className="menu-item">
+                <MenuItemStyled>
+                  <div className="guest">{t('landingPage.teensLabel')}</div>
+                    <div>
+                      <button onClick={(e) =>{ e.stopPropagation(); handleCountChange("teens", -1)}}>-</button>
+                      <span>{guestCounts.teens}</span>
+                      <button onClick={(e) => { e.stopPropagation(); handleCountChange("teens", 1)}}>+</button>
+                    </div>
+                </MenuItemStyled>
+                  <div className="age-range">{`${t('landingPage.ageRangeLabel')} ${teensAgeRange}`}</div>
+              </MenuItemWrapper>
+            </MenuItem>
+          }
+          
+          {isKidsOptionEnabled &&
+            <MenuItem>
+              <MenuItemWrapper className="menu-item">
+                <MenuItemStyled>
+                <div className="guest">{t('landingPage.kidsLabel')}</div>
+                  <div>
+                    <button onClick={(e) => {e.stopPropagation(); handleCountChange("kids", -1)}}>
+                      -
+                    </button>
+                    <span>{guestCounts.kids}</span>
+                    <button onClick={(e) => {e.stopPropagation(); handleCountChange("kids", 1)}}>
+                      +
+                    </button>
+                  </div>
+                </MenuItemStyled>
+                  <div className="age-range">{`${t('landingPage.ageRangeLabel')} ${kidsAgeRange}`}</div>
+              </MenuItemWrapper>
+            </MenuItem>
+          }
+          </StyledSelectField>
       </FormControl>
     </GuestDropdownStyled>
   );

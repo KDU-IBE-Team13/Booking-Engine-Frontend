@@ -1,7 +1,7 @@
 import BedMenu from "../BedMenu/BedMenu";
 import Filter from "../../FilterSection/Filter";
 import RoomBanner from "../../RoomBanner/RoomBanner";
-import RoomCard from "../../RoomCard/RoomCard";
+import RoomCard from "../RoomCard/RoomCard";
 import RoomSearchForm from "../RoomSearchForm/RoomSearchForm";
 import CustomStepper from "../Stepper/CustomStepper";
 import { RoomsContainerWrapper } from "./RoomResultsContainerStyles";

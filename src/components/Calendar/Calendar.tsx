@@ -61,6 +61,15 @@ const BookingDatesCalendar: React.FC<CalendarProps> = ({ tileContent }) => {
         setCheckInDate(bookingStartDate);
         setCheckOutDate(bookingEndDate);
         setIsCalendar(false);
+
+        const nextBookingStartDate = new Date(bookingStartDate);
+        nextBookingStartDate.setDate(nextBookingStartDate.getDate() + 1);
+
+        const nextBookingEndDate = new Date(bookingEndDate);
+        nextBookingEndDate.setDate(nextBookingEndDate.getDate() + 1);
+
+        localStorage.setItem('checkInDate', nextBookingStartDate.toISOString().split('T')[0]);
+        localStorage.setItem('checkOutDate', nextBookingEndDate.toISOString().split('T')[0]);
     }
 };
 

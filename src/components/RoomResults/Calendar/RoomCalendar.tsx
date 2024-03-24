@@ -8,13 +8,29 @@ import { setWeekDays, dateDiffInDays } from "../../../utils/utils";
 import { RootState } from "../../../redux/store";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 interface CalendarProps {
   tileContent: (args: { date: Date }) => JSX.Element | null;
 }
 
+interface IRoomDate {
+  date: Date | null
+}
+
 
 const RoomCalendar: React.FC<CalendarProps> = () => {
+  
+  const location = useLocation();
+
+  const startDateLocalStr = localStorage.getItem('checkInDate');
+  const startDateLocal = startDateLocalStr ? new Date(startDateLocalStr) : null;
+  const endDateLocalStr = localStorage.getItem('checkOutDate');
+  const endDateLocal = endDateLocalStr ? new Date(endDateLocalStr) : null;
+
+  console.log('local date')
+  console.log(startDateLocal, endDateLocal)
+
 
   const lengthOfStay = useSelector(
     (state: RootState) => state.landingPageConfig.searchForm.lengthOfStay
@@ -23,15 +39,35 @@ const RoomCalendar: React.FC<CalendarProps> = () => {
   const { t } = useTranslation();
   
   const present_date = new Date();
-  const [bookingStartDate, setBookingStartDate] = useState<Date | null>(null);
-  const [bookingEndDate, setBookingEndDate] = useState<Date | null>(null);
+  const [bookingStartDate, setBookingStartDate] = useState<Date | null>(startDateLocal);
+  const [bookingEndDate, setBookingEndDate] = useState<Date | null>(endDateLocal);
 
   const [isCalendar, setIsCalendar] = useState(false);
   const [showDoubleView, setShowDoubleView] = useState(true);
   const [error, setError] = useState("");
 
-  const [checkInDate, setCheckInDate] = useState<Date | null>(null);
-  const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
+  const [checkInDate, setCheckInDate] = useState<Date | null>(startDateLocal);
+  const [checkOutDate, setCheckOutDate] = useState<Date | null>(endDateLocal);
+
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const checkInDateParam = searchParams.get('checkInDate');
+    const checkOutDateParam = searchParams.get('checkOutDate');
+
+    if (checkInDateParam && checkOutDateParam) {
+      const checkInDate = new Date(checkInDateParam);
+      const checkOutDate = new Date(checkOutDateParam);
+      
+      setBookingStartDate(checkInDate);
+      setBookingEndDate(checkOutDate);
+    }
+    else
+    {
+      setBookingStartDate(null);
+      setBookingEndDate(null);
+    }
+  }, [location.search]);
 
   const handleDateTileClick = (date: Date) => {
     if (bookingStartDate === null) {
@@ -61,6 +97,21 @@ const RoomCalendar: React.FC<CalendarProps> = () => {
         setCheckInDate(bookingStartDate);
         setCheckOutDate(bookingEndDate);
         setIsCalendar(false);
+
+        const nextBookingStartDate = new Date(bookingStartDate);
+        nextBookingStartDate.setDate(nextBookingStartDate.getDate() + 1);
+
+        const nextBookingEndDate = new Date(bookingEndDate);
+        nextBookingEndDate.setDate(nextBookingEndDate.getDate() + 1);
+
+        localStorage.setItem('checkInDate', nextBookingStartDate.toISOString().split('T')[0]);
+        localStorage.setItem('checkOutDate', nextBookingEndDate.toISOString().split('T')[0]);
+
+        const searchParams = new URLSearchParams(location.search);
+        searchParams.set('checkInDate', nextBookingStartDate.toISOString().split('T')[0]);
+        searchParams.set('checkOutDate', nextBookingEndDate.toISOString().split('T')[0]);
+    
+        window.history.replaceState({}, '', `${window.location.pathname}?${searchParams}`);
     }
 };
 
@@ -80,25 +131,26 @@ useEffect(() => {
 }, []);
 
 
-const CalendarStartMenuInput = () => {
+const CalendarStartMenuInput = ({date}: IRoomDate) => {
   return (
     <Box>
       <Typography fontSize={{ md: "0.7rem", xs: "0.875rem", lg: "0.875rem" }} color={"#858685"} padding={"0 4rem 0 0"}>
         {"Check in between"}
       </Typography>
-      <Typography fontWeight={700} padding={"0 4rem 0 0"}>Any Date</Typography>
+      <>{console.log("this "+ date?.toDateString())}</>
+      <Typography fontWeight={700} padding={"0 4rem 0 0"}>{date? date.toDateString(): `Any Date`}</Typography>
     </Box>
   );
 };
 
 
-const CalendarEndMenuInput = () => {
+const CalendarEndMenuInput = ({date}: IRoomDate) => {
   return (
     <Box>
       <Typography fontSize={{ md: "0.7rem", xs: "0.875rem", lg: "0.875rem" }} color={"#858685"} padding={"0 4rem 0 2rem"}>
         {"Check out between"}
       </Typography>
-      <Typography fontWeight={700} padding={"0 4rem 0 2rem"}>Any Date</Typography>
+      <Typography fontWeight={700} padding={"0 4rem 0 2rem"}>{date? date.toDateString(): `Any Date`}</Typography>
     </Box>
   );
 };
@@ -106,9 +158,9 @@ const CalendarEndMenuInput = () => {
   return (
     <BookingDatesCalendarStyled>
       <IconButton onClick={showCalendar} className="calendar-container">
-        <div>{checkInDate ? checkInDate.toLocaleDateString() : <CalendarStartMenuInput />}</div>
+        <div>{checkInDate ? <CalendarStartMenuInput date={checkInDate}/>: <CalendarStartMenuInput date={bookingStartDate} />}</div>
         <VerticalLine></VerticalLine>
-        <div>{checkOutDate ? checkOutDate.toLocaleDateString() : <CalendarEndMenuInput />}</div>
+        <div>{checkOutDate ? <CalendarEndMenuInput date={checkOutDate}/> : <CalendarEndMenuInput date={bookingEndDate}/>}</div>
         <CalendarMonthIcon />
       </IconButton>
       {isCalendar && (

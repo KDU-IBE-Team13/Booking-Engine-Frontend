@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MenuItem, TextField, Button, Menu } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { MenuItemWrapper, MenuItemStyled, GuestDropdownStyled } from "./GuestDropDownStyled";
@@ -13,10 +13,9 @@ interface GuestCounts {
 }
 
 const GuestDropdown = () => {
-  const [guestCounts, setGuestCounts] = useState<GuestCounts>({
-    adults: 1,
-    teens: 0,
-    kids: 0,
+  const [guestCounts, setGuestCounts] = useState<GuestCounts>(() => {
+    const storedCounts = localStorage.getItem("guestCounts");
+    return storedCounts ? JSON.parse(storedCounts) : { adults: 1, teens: 0, kids: 0 };
   });
 
   const { t } = useTranslation();
@@ -46,10 +45,11 @@ const GuestDropdown = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleCountChange = (type: keyof GuestCounts, value: number) => {
-    setGuestCounts((prevCounts) => ({
-      ...prevCounts,
-      [type]: Math.max(prevCounts[type] + value, 0),
-    }));
+    setGuestCounts((prevCounts) => {
+      const updatedCounts = { ...prevCounts, [type]: Math.max(prevCounts[type] + value, 0) };
+      localStorage.setItem("guestCounts", JSON.stringify(updatedCounts));
+      return updatedCounts;
+    });
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

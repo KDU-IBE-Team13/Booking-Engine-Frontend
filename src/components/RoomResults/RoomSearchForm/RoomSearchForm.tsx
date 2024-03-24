@@ -1,5 +1,5 @@
 import BedMenu from "../BedMenu/BedMenu";
-import RoomSelectWrapper from "../../RoomSelect/RoomSelectWrapper";
+import RoomSelectWrapper from "../../RoomResults/RoomSelect/RoomSelectWrapper";
 import GuestDropdown from "../GuestDropdown/GuestDropdown";
 import { RoomSearchFormWrapper } from "./RoomSearchFormStyles";
 import RoomCalendar from "../Calendar/RoomCalendar";

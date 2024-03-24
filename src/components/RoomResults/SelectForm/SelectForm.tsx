@@ -1,7 +1,7 @@
 import GuestDropdown from "../../GuestDropdown/GuestDropDown";
 import PropertyDropDown from "../../PropertyDropDown/PropertyDropDown";
 import { SelectFormStyled } from "./SelectFormStyles";
-import RoomSelect from "../RoomSelect/RoomSelect";
+import RoomSelect from "../../LandingRoomSelect/RoomSelect";
 import Calendar from "../../Calendar/Calendar";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -28,10 +28,36 @@ export const SelectForm = () => {
   const exchangeRate = useSelector((state: RootState) => state.currency.exchangeRates[selectedCurrency]);
 
   const navigate = useNavigate(); 
-  const routeChange = () =>{ 
-    const path = `/room-results`; 
-    navigate(path);
+  const routeChange = () => { 
+    const path = `/room-results`;
+  
+    const checkInDate = localStorage.getItem('checkInDate');
+    const checkOutDate = localStorage.getItem('checkOutDate');
+  
+    const guestCountsString = localStorage.getItem('guestCounts');
+    const guestCounts = guestCountsString ? JSON.parse(guestCountsString) : {};
+    const adultCount: number = guestCounts?.["adults"] ? guestCounts["adults"] : 1;
+    const teenCount: number = guestCounts?.["teens"] ? guestCounts["teens"] : 0;
+    const childCount: number = guestCounts?.["kids"] ? guestCounts["kids"] : 0;
+
+    const roomCount = localStorage.getItem('roomCount');
+    const roomCountNum = roomCount ? Number(roomCount): 1;
+
+  
+    let searchParams = '?';
+    if (checkInDate && checkOutDate) {
+      searchParams += `checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&`;
+    }
+    else
+    {
+      searchParams += ``;
+    }
+
+    searchParams += `adults=${adultCount}&teens=${teenCount}&kids=${childCount}&rooms=${roomCountNum}`;
+  
+    navigate(path + searchParams);
   }
+  
 
   useEffect(() => {
     dispatch(fetchLandingPageConfig());

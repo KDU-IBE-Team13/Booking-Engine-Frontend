@@ -6,7 +6,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { LandingPage } from "./pages/LandingPage/LandingPage";
 import { RoomsPage } from "./pages/RoomsPage/RoomsPage";
 
-
 function App() {
   return (
     <Provider store={store}>

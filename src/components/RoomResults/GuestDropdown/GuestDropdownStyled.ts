@@ -35,6 +35,6 @@ flex-grow: 2;
   
 `;
 
-export const StyledTextField = styled(Select)`
+export const StyledSelectField = styled(Select)`
   font-weight: 900;
 `

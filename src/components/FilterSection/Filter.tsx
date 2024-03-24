@@ -43,8 +43,9 @@ const Filter = () => {
       sx={{
         backgroundColor: "#EFF0F1",
         padding: "1rem 1.2rem",
-        minHeight: "maxContent",
-        flexGrow: 1
+        width: "293px",
+        flexGrow: 1,
+        height: "fit-content"
       }}
     >
       <Typography fontWeight={700} fontSize="1.25rem">
