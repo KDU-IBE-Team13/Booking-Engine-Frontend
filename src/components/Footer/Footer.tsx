@@ -29,21 +29,22 @@ const Footer = () => {
 
   return (
     <FooterContainer>
-      <StyledContainer maxWidth={false}>
-        <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Box display="flex" alignItems="center">
-            <Logo src={logo || companyLogoWhite} alt="logo" />
-          </Box>
-
-          <Box>
-            <CompanyInfo variant="body2">
-              © {companyName} <br />
-              {t('description.footer')}
-            </CompanyInfo>
-          </Box>
+    <StyledContainer maxWidth={false}>
+      <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Box display="flex" alignItems="center">
+          <Logo data-testid="logo" src={logo || companyLogoWhite} alt="logo" />
         </Box>
-      </StyledContainer>
-    </FooterContainer>
+  
+        <Box>
+          <CompanyInfo variant="body2">
+            <span data-testid="company-name">© {companyName}</span> <br />
+            <span data-testid="description">{t('description.footer')}</span>
+          </CompanyInfo>
+        </Box>
+      </Box>
+    </StyledContainer>
+  </FooterContainer>
+  
   );
 };
 

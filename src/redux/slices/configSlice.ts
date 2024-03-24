@@ -43,7 +43,8 @@ const initialState: ILanguageState = {
     headerConfig: {
       logo: '',
       supportedLanguages: [],
-      supportedCurrencies: []
+      supportedCurrencies: [],
+      title: '',
     },
     footerConfig: {
         logo: '',

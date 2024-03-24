@@ -55,8 +55,8 @@ export const SelectFormStyled = styled.div<BannerStyledProps>`
     height: 3.1rem;
   }
 
-  .rooms-dropdown{
-    width: 6.4rem
+  .rooms-dropdown {
+    width: 6.4rem;
   }
 
   .property-select-label-hidden {
@@ -86,4 +86,16 @@ export const SelectFormStyled = styled.div<BannerStyledProps>`
   .css-14ux82-MuiButtonBase-root-MuiButton-root {
     min-width: 2.5rem;
   }
+
+  .accessibleChair {
+    display: flex;
+    align-items: center;
+    margin-top: 0.3rem;
+  }
+  .wheelChair-img {
+    width: 1rem;
+    height: 1rem;
+    margin-left: 0.2rem
+  }
+
 `;

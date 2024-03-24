@@ -54,7 +54,7 @@ export const DoubleCalendarStyled = styled.div`
     .errorMsg {
       margin-top: 0.3rem;
       color: #d7394a;
-      width: 23%;
+      width: 12rem;
       font-size: 0.9rem;
     }
   }

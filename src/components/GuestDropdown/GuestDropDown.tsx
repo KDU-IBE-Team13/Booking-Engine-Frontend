@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MenuItem, TextField, Button, Menu } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { MenuItemWrapper, MenuItemStyled, GuestDropdownStyled } from "./GuestDropDownStyled";
+import {
+  MenuItemWrapper,
+  MenuItemStyled,
+  GuestDropdownStyled,
+} from "./GuestDropDownStyled";
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -12,7 +16,11 @@ interface GuestCounts {
   kids: number;
 }
 
-const GuestDropdown = () => {
+export interface GuestSelectProps {
+  rooms: number;
+}
+
+const GuestDropdown = (rooms: GuestSelectProps) => {
   const [guestCounts, setGuestCounts] = useState<GuestCounts>({
     adults: 1,
     teens: 0,
@@ -22,15 +30,28 @@ const GuestDropdown = () => {
   const { t } = useTranslation();
 
   const adultsOption = useSelector(
-    (state: RootState) => state.landingPageConfig.searchForm.guests.guestTypes.filter((guestType) => guestType.type === "Adults")[0]
+    (state: RootState) =>
+      state.landingPageConfig.searchForm.guests.guestTypes.filter(
+        (guestType) => guestType.type === "Adults"
+      )[0]
   );
 
   const teensOption = useSelector(
-    (state: RootState) => state.landingPageConfig.searchForm.guests.guestTypes.filter((guestType) => guestType.type === "Teens")[0]
+    (state: RootState) =>
+      state.landingPageConfig.searchForm.guests.guestTypes.filter(
+        (guestType) => guestType.type === "Teens"
+      )[0]
   );
 
   const kidsOption = useSelector(
-    (state: RootState) => state.landingPageConfig.searchForm.guests.guestTypes.filter((guestType) => guestType.type === "Kids")[0]
+    (state: RootState) =>
+      state.landingPageConfig.searchForm.guests.guestTypes.filter(
+        (guestType) => guestType.type === "Kids"
+      )[0]
+  );
+
+  const MAX_GUEST_COUNT = useSelector(
+    (state: RootState) => state.landingPageConfig.searchForm.guests.maxGuests
   );
 
   const isAdultsOptionEnabled = adultsOption?.enabled;
@@ -41,15 +62,20 @@ const GuestDropdown = () => {
 
   const isKidsOptionEnabled = kidsOption?.enabled;
   const kidsAgeRange = kidsOption?.ageRange;
-  
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleCountChange = (type: keyof GuestCounts, value: number) => {
-    setGuestCounts((prevCounts) => ({
-      ...prevCounts,
-      [type]: Math.max(prevCounts[type] + value, 0),
-    }));
+    const totalCount =
+      guestCounts.adults + guestCounts.teens + guestCounts.kids;
+    const updatedCount = guestCounts[type] + value;
+
+    if (totalCount + value <= MAX_GUEST_COUNT && updatedCount >= 0) {
+      setGuestCounts((prevCounts) => ({
+        ...prevCounts,
+        [type]: updatedCount,
+      }));
+    }
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -60,19 +86,42 @@ const GuestDropdown = () => {
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+    if (rooms.rooms > guestCounts.adults) {
+      setGuestCounts((prevCounts) => ({
+        ...prevCounts,
+        adults: rooms.rooms,
+      }));
+    }
+  }, [rooms, guestCounts.adults]);
+
   return (
     <GuestDropdownStyled>
-      <label className="property">{t('landingPage.guestsLabel')}</label>
+      <label className="property">{t("landingPage.guestsLabel")}</label>
       <TextField
         label=""
         value={`${
-          guestCounts.adults > 0 ? `${t('landingPage.adultsLabel')}: ${guestCounts.adults}` : ""
-        } 
-        ${
-          guestCounts.teens > 0 ? `${t('landingPage.teensLabel')}: ${guestCounts.teens}` : ""
-        }
-        ${
-          guestCounts.kids > 0 ? `${t('landingPage.kidsLabel')}: ${guestCounts.kids}` : ""
+          guestCounts.adults > 0
+            ? `${t("landingPage.adultsLabel")}: ${guestCounts.adults}`
+            : ""
+        }${
+          guestCounts.adults > 0 &&
+          (guestCounts.teens > 0 || guestCounts.kids > 0)
+            ? ", "
+            : ""
+        }${
+          guestCounts.teens > 0
+            ? `${t("landingPage.teensLabel")}: ${guestCounts.teens}`
+            : ""
+        }${
+          (guestCounts.adults > 0 || guestCounts.teens > 0) &&
+          guestCounts.kids > 0
+            ? ", "
+            : ""
+        }${
+          guestCounts.kids > 0
+            ? `${t("landingPage.kidsLabel")}: ${guestCounts.kids}`
+            : ""
         }`}
         InputProps={{
           endAdornment: (
@@ -102,43 +151,55 @@ const GuestDropdown = () => {
           horizontal: "right",
         }}
       >
-        {isAdultsOptionEnabled && 
+        {isAdultsOptionEnabled && (
           <MenuItem>
             <MenuItemWrapper className="menu-item">
               <MenuItemStyled>
-                <div className="guest">{t('landingPage.adultsLabel')}</div>
+                <div className="guest">{t("landingPage.adultsLabel")}</div>
                 <div>
-                  <button onClick={() => handleCountChange("adults", -1)}>-</button>
+                  <button onClick={() => handleCountChange("adults", -1)}>
+                    -
+                  </button>
                   <span>{guestCounts.adults}</span>
-                  <button onClick={() => handleCountChange("adults", 1)}>+</button>
+                  <button onClick={() => handleCountChange("adults", 1)}>
+                    +
+                  </button>
                 </div>
               </MenuItemStyled>
-                <div className="age-range">{`${t('landingPage.ageRangeLabel')} ${adultsAgeRange}`}</div>
+              <div className="age-range">{`${t(
+                "landingPage.ageRangeLabel"
+              )} ${adultsAgeRange}`}</div>
             </MenuItemWrapper>
           </MenuItem>
-        }
+        )}
 
-        {isTeensOptionEnabled &&
+        {isTeensOptionEnabled && (
           <MenuItem>
             <MenuItemWrapper className="menu-item">
               <MenuItemStyled>
-                <div className="guest">{t('landingPage.teensLabel')}</div>
-                  <div>
-                    <button onClick={() => handleCountChange("teens", -1)}>-</button>
-                    <span>{guestCounts.teens}</span>
-                    <button onClick={() => handleCountChange("teens", 1)}>+</button>
-                  </div>
+                <div className="guest">{t("landingPage.teensLabel")}</div>
+                <div>
+                  <button onClick={() => handleCountChange("teens", -1)}>
+                    -
+                  </button>
+                  <span>{guestCounts.teens}</span>
+                  <button onClick={() => handleCountChange("teens", 1)}>
+                    +
+                  </button>
+                </div>
               </MenuItemStyled>
-                <div className="age-range">{`${t('landingPage.ageRangeLabel')} ${teensAgeRange}`}</div>
+              <div className="age-range">{`${t(
+                "landingPage.ageRangeLabel"
+              )} ${teensAgeRange}`}</div>
             </MenuItemWrapper>
           </MenuItem>
-        }
-        
-        {isKidsOptionEnabled &&
+        )}
+
+        {isKidsOptionEnabled && (
           <MenuItem>
             <MenuItemWrapper className="menu-item">
               <MenuItemStyled>
-              <div className="guest">{t('landingPage.kidsLabel')}</div>
+                <div className="guest">{t("landingPage.kidsLabel")}</div>
                 <div>
                   <button onClick={() => handleCountChange("kids", -1)}>
                     -
@@ -149,11 +210,12 @@ const GuestDropdown = () => {
                   </button>
                 </div>
               </MenuItemStyled>
-                <div className="age-range">{`${t('landingPage.ageRangeLabel')} ${kidsAgeRange}`}</div>
+              <div className="age-range">{`${t(
+                "landingPage.ageRangeLabel"
+              )} ${kidsAgeRange}`}</div>
             </MenuItemWrapper>
           </MenuItem>
-        }
-        
+        )}
       </Menu>
     </GuestDropdownStyled>
   );
