@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   FormControl,
   MenuItem,
@@ -8,8 +7,16 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
+
+export interface RoomSelectProps {
+  rooms: number;
+  setRooms: React.Dispatch<React.SetStateAction<number>>;
+}
+ 
 
 const RoomSelect = () => {
+
   const [rooms, setRooms] = useState<number | "">(() => {
     const storedRoomCount = localStorage.getItem("roomCount");
     const storedRoomCountNum: number = Number(storedRoomCount);
@@ -20,7 +27,7 @@ const RoomSelect = () => {
 
   const roomOptions = useSelector(
     (state: RootState) => state.landingPageConfig.searchForm.rooms.options
-  )
+  );
 
   const handleChange = (event: SelectChangeEvent<number | "">) => {
     setRooms(event.target.value as number | "");
@@ -30,7 +37,7 @@ const RoomSelect = () => {
   return (
     <div>
       <FormControl>
-        <label className="property">{t('landingPage.roomsLabel')}</label>
+        <label className="property">{t("landingPage.roomsLabel")}</label>
         <Select
           value={rooms}
           onChange={handleChange}

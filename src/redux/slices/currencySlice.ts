@@ -49,7 +49,7 @@ export const fetchExchangeRates = (): AppThunk => async (dispatch) => {
     }
     const data = await response.json();
     dispatch(fetchExchangeRatesSuccess(data.rates));
-  } catch (error) {
+  } catch (error: any) {
     dispatch(fetchExchangeRatesFailure(error.message));
   }
 };

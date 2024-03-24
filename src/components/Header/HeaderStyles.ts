@@ -1,6 +1,13 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
-import { Container, Typography, AppBar, Box, Toolbar, Button} from '@mui/material';
+import {
+  Container,
+  Typography,
+  AppBar,
+  Box,
+  Toolbar,
+  Button,
+} from "@mui/material";
 
 export const slideIn = keyframes`
   from {
@@ -22,11 +29,11 @@ export const StyledAppBar = styled(AppBar)`
   }
 `;
 
-export const StyledContainer = styled (Container)`
+export const StyledContainer = styled(Container)`
   && {
     padding: 0 5rem;
   }
-`
+`;
 
 export const StyledToolbar = styled(Toolbar)`
   && {
@@ -47,11 +54,23 @@ export const StyledBox = styled(Box)`
       font-family: "Lato", sans-serif;
       font-weight: 600;
     }
+
+    .logo-icon {
+      box-sizing: border-box;
+      max-width: 6rem;
+      height: auto;
+      margin-top: 0.4rem;
+    }
+
+    .logoContainer {
+      display: flex;
+      align-items: center;
+    }
   }
 
-  @media screen and (max-width: 455px){
-    .booking-engine-text{
-    display: none;
+  @media screen and (max-width: 455px) {
+    .booking-engine-text {
+      display: none;
     }
   }
 `;
@@ -61,7 +80,7 @@ export const StyledHamburgerIcon = styled.div`
     display: none;
     cursor: pointer;
 
-    @media (max-width: 767px) {
+    @media (max-width: 887px) {
       display: block;
     }
   }
@@ -74,7 +93,7 @@ export const StyledNavItemsContainer = styled(Box)`
     align-items: center;
     justify-content: space-between;
 
-    @media (max-width: 767px) {
+    @media (max-width: 887px) {
       display: none;
 
       &.mobile-menu-open {
@@ -130,4 +149,19 @@ export const TitleTypography = styled(Typography)`
   && {
     font-size: 1.2rem;
   }
-`
+`;
+
+export const StyledBookingbutton = styled(Button)`
+  && {
+    background-color: white;
+    color: #26266d;
+    box-shadow: none;
+    font-family: "Lato", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+`;

@@ -8,4 +8,4 @@ export const LANDING_PAGE_CONFIGURATION_ENDPOINT = "http://localhost:8080/api/v1
 export const FAILED_DATA_MESSAGE = "Failed to fetch data";
 export const FAILED_PROPERTIES_FETCH_MESSAGE = "Failed to fetch properties";
 export const FAILED_PROPERTY_RATES_FETCH_MESSAGE = "Failed to fetch property rates";
-
+export const TEAM_HOTEL_ID = "Team 13 Hotel";

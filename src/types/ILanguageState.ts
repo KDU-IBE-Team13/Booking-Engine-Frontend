@@ -6,6 +6,7 @@ export interface ILanguageState {
       logo: string;
       supportedLanguages: ILanguage[];
       supportedCurrencies: ICurrency[];
+      title: string;
     };
     footerConfig: {
       logo: string;
