@@ -14,6 +14,9 @@ import { RoomsDetail } from '../../../types/ICard';
 import roomPic1 from "../../../assets/room-pic-1.jpg";
 import roomPic2 from "../../../assets/room-pic-2.jpg";
 import roomPic3 from "../../../assets/room-pic-3.jpg";
+import { t } from 'i18next';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store';
 
 interface RoomCardProps {
   roomDetails: RoomsDetail; // Define the type for roomDetails
@@ -23,6 +26,35 @@ interface RoomCardProps {
 const RoomCard: React.FC<RoomCardProps> = ({ roomDetails }) => {
   const { roomTypeName, areaInSquareFeet, singleBed, doubleBed, maxCapacity, propertyAddress, basicNightlyPrice } = roomDetails;
   console.log(roomDetails)
+  let room = "SUPER_DELUXE";
+  const selectedCurrency = useSelector(
+    (state: RootState) => state.currency.selectedCurrency
+  );
+  const selectedCurrencySymbol = useSelector(
+    (state: RootState) => state.currency.selectedCurrencySymbol
+  );
+  const exchangeRate = useSelector(
+    (state: RootState) => state.currency.exchangeRates[selectedCurrency]
+  );
+
+  const price = 132;
+  let convertedPrice;
+
+    if (selectedCurrency === "USD") {
+      convertedPrice = basicNightlyPrice;
+    } else {
+      if (price != null && exchangeRate != null) {
+        const tempConvertedPrice = (price * exchangeRate).toFixed(1);
+        if (tempConvertedPrice.length > 5) {
+          convertedPrice = Number(tempConvertedPrice).toPrecision(7);
+        } else {
+          convertedPrice = tempConvertedPrice;
+        }
+      } else {
+        convertedPrice = null;
+      }
+    }
+    
   return (
     <Card sx={{ maxWidth: 293 }}>
          <Carousel 
@@ -55,7 +87,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ roomDetails }) => {
       <CardContent>
         <HeaderWrapper>
           <ResortName>{roomTypeName}</ResortName>
-          <NewPropertyLabel>New property</NewPropertyLabel>
+          <NewPropertyLabel>{t('roomPage.newProperty')}</NewPropertyLabel>
         </HeaderWrapper>
         <LocationWrapper>
           <img src={locationIcon} alt="location" />
@@ -80,15 +112,17 @@ const RoomCard: React.FC<RoomCardProps> = ({ roomDetails }) => {
           {doubleBed > 0 && <Typography>{`${doubleBed}`}{doubleBed > 1 ? ` Doubles` : ` Double`}</Typography>}
         </ContentWrapper>
       </CardContent>
-      <BannerFlag>
+      {/* <BannerFlag>
         <DealText>Special Deal</DealText>
         <BannerImg src={promotionFlag} alt="promotion" />
       </BannerFlag>
-      <PromoDesc>Save 10% when you book 2+ nights</PromoDesc>
+      <PromoDesc>{t('roomPage.promo')}</PromoDesc> */}
       <CardContent>
-        <PriceText>{basicNightlyPrice}$</PriceText>
-        <PerNightLabel>per night</PerNightLabel>
-        <StyledButton variant="contained">Select Room</StyledButton>
+        {/* <PriceText>{basicNightlyPrice}$</PriceText> */}
+        <PriceText>{convertedPrice}{selectedCurrencySymbol}</PriceText>
+
+        <PerNightLabel>{t('roomPage.perNight')}</PerNightLabel>
+        <StyledButton variant="contained">{t('roomPage.selectRoom')}</StyledButton>
       </CardContent>
     </Card>
   );

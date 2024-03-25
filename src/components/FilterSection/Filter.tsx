@@ -103,6 +103,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { OptionText, StyledBox } from "./FilterStyled";
 import { StyledAccordion, StyledAccordionSummary, StyledAccordionDetails, StyledTypography } from "./FilterStyled";
 import { setMinPrice, setMaxPrice, setBeds, setRoomTypes, setBedType } from "../../../src/redux/slices/roomsSlice"
+import { t } from "i18next";
 
 const Filter: React.FC = () => {
   const dispatch = useDispatch();
@@ -133,12 +134,12 @@ const Filter: React.FC = () => {
     {
       filterName: 'Min Price',
       show: true,
-      options: ['100', '200', '300'], // Example options
+      options: ['70', '90', '100'], // Example options
     },
     {
       filterName: 'Max Price',
       show: true,
-      options: ['200', '300', '400'], // Example options
+      options: ['70', '90', '100'], // Example options
     },
     {
       filterName: 'Beds',
@@ -161,7 +162,7 @@ const Filter: React.FC = () => {
     <StyledBox>
       <StyledAccordion>
         <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <StyledTypography>{"Narrow Your Results"}</StyledTypography>
+          <StyledTypography>{t("roomPage.narrowYourResults")}</StyledTypography>
         </StyledAccordionSummary>
         <StyledAccordionDetails>
           <div>

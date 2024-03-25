@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/store';
 import { fetchRoomsData, setCurrentPage } from '../../../redux/slices/roomsSlice';
 import { useLocation } from 'react-router-dom';
+import { t } from 'i18next';
 
 const SearchButton = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -45,7 +46,7 @@ const SearchButton = () => {
   
   return (
     <StyledButton variant="contained" onClick={handleSearchClick}>
-      Search Dates
+      {t('roomPage.searchDates')}
     </StyledButton>
   )
 };

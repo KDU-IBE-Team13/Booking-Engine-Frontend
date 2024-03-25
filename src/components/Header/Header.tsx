@@ -107,6 +107,8 @@ const Header = () => {
     setCurrencyAnchor(null);
   };
 
+  const defaultCurrency = selectedLanguage.key === 'de' ? 'EUR' : selectedCurrency;
+
   return (
     <StyledAppBar>
       <StyledContainer maxWidth={false}>
@@ -191,6 +193,7 @@ const Header = () => {
                 <MenuItem
                   key={index}
                   onClick={() => handleCurrencyChange(supportedCurrency)}
+                  selected={supportedCurrency.currency === defaultCurrency}
                 >
                   {supportedCurrency.currencySymbol}{" "}
                   {supportedCurrency.currency}

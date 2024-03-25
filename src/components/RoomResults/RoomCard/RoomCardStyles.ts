@@ -35,7 +35,6 @@ export const StarRating = styled.div`
 
 export const NewPropertyLabel = styled.div`
   background-color: #cdcded;
-  text-wrap: nowrap;
   padding: 0 10px;
   height: fit-content;
   border-radius: 5px;

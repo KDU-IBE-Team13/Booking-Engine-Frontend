@@ -133,7 +133,7 @@ const CalendarStartMenuInput = ({date}: IRoomDate) => {
   return (
     <Box>
       <Typography fontSize={{ md: "0.8rem", xs: "0.75rem", lg: "0.875rem" }} color={"#858685"} padding={{md: "0 4rem 0 0", xs: "0rem"}}>
-        {"Check in between"}
+      {t('roomPage.checkInBetween')}
       </Typography>
       <Typography fontSize={{ md: "0.8rem", xs: "0.75rem", lg: "0.875rem" }} fontWeight={700} padding={{md: "0 4rem 0 0", xs: "0rem"}}>{date? date.toDateString(): `Any Date`}</Typography>
     </Box>
@@ -145,7 +145,7 @@ const CalendarEndMenuInput = ({date}: IRoomDate) => {
   return (
     <Box>
       <Typography fontSize={{ md: "0.8rem", xs: "0.75rem", lg: "0.875rem" }} color={"#858685"} padding={{md: "0 4rem 0 2rem", xs: "0rem"}}>
-        {"Check out between"}
+      {t('roomPage.checkOutBetween')}
       </Typography>
       <Typography fontSize={{ md: "0.8rem", xs: "0.75rem", lg: "0.875rem" }} fontWeight={700} padding={{md: "0 4rem 0 2rem", xs: "0rem"}}>{date? date.toDateString(): `Any Date`}</Typography>
     </Box>
