@@ -99,8 +99,8 @@ const CardContainer = () => {
               />
             );
         })}
+        <Itinerary />
       </CardWrapper>
-      <Itinerary />
 
     </CardContainerSection>
   );
