@@ -7,14 +7,22 @@ const BedMenu = () => {
 const beds: number[] = [1, 2, 3, 4, 5];
 const location = useLocation();
 const [selectedBeds, setSelectedBeds] = useState<number>(1);
+localStorage.setItem('beds', '0');
 
 
 useEffect(() => {
   const searchParams = new URLSearchParams(location.search);
   const bedsParam = searchParams.get('beds');
   const bedsLocal = localStorage.getItem('beds');
-  const beds = bedsParam ? Number(bedsParam) : (bedsLocal ? Number(bedsLocal) : 0);
-  setSelectedBeds(beds);
+  const beds = bedsParam ? Number(bedsParam) : (bedsLocal ? Number(bedsLocal) : 1);
+  if(beds > 0)
+  {
+    setSelectedBeds(beds);
+  }
+  else
+  {
+    setSelectedBeds(1);
+  }
 }, [location.search]);
 
 const handleBedChange = (event: SelectChangeEvent<number>) => {

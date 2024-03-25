@@ -24,6 +24,9 @@ const CardContainer = () => {
   const roomsData = useSelector((state: RootState) => state.rooms.roomsData);
   const currentPage = useSelector((state: RootState) => state.rooms.currentPage);
   const totalPages = Math.ceil(roomsData ? 6 / 3 : 0); 
+  const sortOrder = useSelector((state: RootState) => state.rooms.sortOrder);
+  const currentPage = useSelector((state: RootState) => state.rooms.currentPage)
+
 
   const [resultsRange, setResultsRange] = useState({ start: 0, end: 0 });
 
@@ -38,9 +41,8 @@ const CardContainer = () => {
     const guestCounts = guestCountsString ? JSON.parse(guestCountsString) : {};
     const guestCountNum = guestCounts.adults + guestCounts.teens + guestCounts.kids;
     const bedCount = Number(localStorage.getItem('beds'));
-    const currentPage = 1;
 
-    dispatch(fetchRoomsData(checkInDateISO, checkOutDateISO, propertyId, roomCount, guestCountNum,currentPage, bedCount));
+    dispatch(fetchRoomsData(checkInDateISO, checkOutDateISO, propertyId, roomCount, guestCountNum,currentPage, bedCount, sortOrder));
   }, [dispatch, currentPage]);
 
 

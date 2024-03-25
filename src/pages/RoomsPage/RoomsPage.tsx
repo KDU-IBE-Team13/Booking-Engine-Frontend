@@ -12,6 +12,9 @@ export const RoomsPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   // const roomsData = useSelector((state: RootState) => state.rooms.roomsData);
   const location = useLocation();
+  const sortOrder = useSelector((state: RootState) => state.rooms.sortOrder);
+  const currentPage = useSelector((state: RootState) => state.rooms.currentPage)
+
 
   useEffect(() => {
     const checkInDate = localStorage.getItem('checkInDate') as string;
@@ -25,7 +28,7 @@ export const RoomsPage = () => {
     const guestCountNum = guestCounts.adults + guestCounts.teens + guestCounts.kids;
     const bedCount = Number(localStorage.getItem('beds'));
 
-    dispatch(fetchRoomsData(checkInDateISO, checkOutDateISO, propertyId, roomCount, guestCountNum, bedCount));
+    dispatch(fetchRoomsData(checkInDateISO, checkOutDateISO, propertyId, roomCount, guestCountNum, currentPage, bedCount, sortOrder));
   }, [dispatch, location.pathname]);
 
 
@@ -53,7 +56,7 @@ export const RoomsPage = () => {
     if (rooms) localStorage.setItem('rooms', rooms);
     if (beds) localStorage.setItem('beds', beds);
     localStorage.setItem('guestCounts', JSON.stringify(guestCounts));
-    
+
   }, [location.search]);
 
 
