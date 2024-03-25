@@ -15,8 +15,41 @@ import userIcon from "../../../assets/user-icon.svg";
 import bedIcon from "../../../assets/bed-icon.svg";
 import promotionFlag from "../../../assets/promotion-flag.png";
 import { IRooomCard } from '../../../types/IRoomCard';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store';
 
 export default function RoomCard({carouselImg1, carouselImg2, carouselImg3}: IRooomCard) {
+  const { t } = useTranslation();
+  let room = "SUPER_DELUXE";
+  const selectedCurrency = useSelector(
+    (state: RootState) => state.currency.selectedCurrency
+  );
+  const selectedCurrencySymbol = useSelector(
+    (state: RootState) => state.currency.selectedCurrencySymbol
+  );
+  const exchangeRate = useSelector(
+    (state: RootState) => state.currency.exchangeRates[selectedCurrency]
+  );
+
+  const price = 132;
+  let convertedPrice;
+
+    if (selectedCurrency === "USD") {
+      convertedPrice = price;
+    } else {
+      if (price != null && exchangeRate != null) {
+        const tempConvertedPrice = (price * exchangeRate).toFixed(1);
+        if (tempConvertedPrice.length > 5) {
+          convertedPrice = Number(tempConvertedPrice).toPrecision(7);
+        } else {
+          convertedPrice = tempConvertedPrice;
+        }
+      } else {
+        convertedPrice = null;
+      }
+    }
+
   return (
     <Card sx={{ maxWidth: 293 }}>
     <Carousel 
@@ -49,9 +82,9 @@ export default function RoomCard({carouselImg1, carouselImg2, carouselImg3}: IRo
     <CardContent>
         <HeaderWrapper>
             <ResortName>
-                Long Beautiful Resort Name
+            {t(`roomType.${room}`)}
             </ResortName>
-            <NewPropertyLabel>New property</NewPropertyLabel>
+            <NewPropertyLabel>{t("roomPage.newProperty")}</NewPropertyLabel>
         </HeaderWrapper>
         <LocationWrapper>
         <img src={locationIcon} alt="location"/>
@@ -75,19 +108,19 @@ export default function RoomCard({carouselImg1, carouselImg2, carouselImg3}: IRo
         </ContentWrapper>
         <ContentWrapper>
             <img src={bedIcon} alt="bed"/>
-            <Typography>Queen or 2 doubles</Typography>
+            <Typography>{t('bedType.singleBed')} or 2 {t('bedType.doubleBed')}</Typography>
         </ContentWrapper>
      
     </CardContent>
     <BannerFlag>
-        <DealText>Special Deal</DealText>
+        <DealText>{t('roomPage.specialDeal')}</DealText>
         <BannerImg src={promotionFlag} alt="promotion" />
     </BannerFlag>
-    <PromoDesc>Save 10% when you book 2+ nights</PromoDesc>
+    <PromoDesc>{t('roomPage.promo')}</PromoDesc>
     <CardContent>
-        <PriceText>132$</PriceText>
-        <PerNightLabel>per night</PerNightLabel>
-        <StyledButton variant="contained">Select Room</StyledButton>
+        <PriceText>{selectedCurrencySymbol}{convertedPrice}</PriceText>
+        <PerNightLabel>{t('roomPage.perNight')}</PerNightLabel>
+        <StyledButton variant="contained">{t('roomPage.selectRoom')}</StyledButton>
     </CardContent>
   </Card>
   );

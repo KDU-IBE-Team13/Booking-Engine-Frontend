@@ -13,27 +13,28 @@ import {
   StyledMenuItem,
   StyledCheckbox,
 } from "./FilterStyled";
+import { useTranslation } from "react-i18next";
 
 const Filter = () => {
-
+const {t} = useTranslation();
 
   const filters = [
     {
-      filterName: 'Bed Type',
+      filterName: 'bedType',
       show: true,
-      options: ['Option 1', 'Option 2', 'Option 3'],
-      selectedOptions: ['Option 1'], 
+      options: ['singleBed', 'doubleBed'],
+      selectedOptions: ['singleBed'], 
     },
     {
-      filterName: 'Room Type',
+      filterName: 'RoomType',
       show: true,
-      options: ['Option A', 'Option B', 'Option C'],
-      selectedOptions: [], 
+      options: ['deluxe', 'suite'],
+      selectedOptions: ['DELUXE'], 
     },
     {
-      filterName: 'Price',
+      filterName: 'price',
       show: true,
-      options: ['Option X', 'Option Y', 'Option Z'],
+      options: [ '$150', '$300', '$600'],
       selectedOptions: [],
     },
   ];
@@ -46,7 +47,7 @@ const Filter = () => {
           expandIcon={<ExpandMoreIcon />}
         >
         <StyledTypography>
-          {"Narrow Your Results"}
+          {t("roomPage.narrowYourResults")}
         </StyledTypography>                
         </StyledAccordionSummary>
         <StyledAccordionDetails>
@@ -62,7 +63,7 @@ const Filter = () => {
                       aria-controls="panel1a-content"
                       id="panel1a-header"
                     >
-                      <Typography>{filter.filterName}</Typography>
+                      <Typography>{t(`filter.${filter.filterName}`)}</Typography>
                     </StyledAccordionSummary>
                     <StyledAccordionDetails>
                       {filter.options.map((option) => {
@@ -74,6 +75,7 @@ const Filter = () => {
                                 checked={filter.selectedOptions?.includes(option)}
                               />
                             </ListItemIcon>
+                            <ListItemText primary={t(`filter.selectedPriceRange`,{option})} />
                           </MenuItem>
                         );
                       })}

@@ -1,15 +1,17 @@
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import { StyledBox, StyledCheckIcon, StyledStepper } from './CustomStepperStyles';
+import { useTranslation } from 'react-i18next';
 
 const steps = [
-  'Choose room',
-  'Choose add on',
-  'Checkout',
+  'chooseRoom',
+  'chooseAddOn',
+  'checkOut',
 ];
 
 
 export default function CustomStepper() {
+  const {t} = useTranslation();
   return (
     <StyledBox>
       <StyledStepper activeStep={1} alternativeLabel>
@@ -19,7 +21,7 @@ export default function CustomStepper() {
               StepIconComponent={StepIconWithCustomColor}
               StepIconProps={{ active: index === 0 }}
             >
-              {index+1}: {label}
+              {index+1}: {t(`roomPage.${label}`)}
             </StepLabel>
           </Step>
         ))}

@@ -1,4 +1,5 @@
 import { Box, Typography, Card, CardContent, Button } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 const Container = styled(Box)`
@@ -39,12 +40,13 @@ const StyledButton = styled(Button)`
 `;
 
 const TripItinerary: React.FC = () => {
+  const {t} = useTranslation();
   return (
     <Container>
           <StyledTypography gutterBottom>
-            Your Trip Itinerary
+            
           </StyledTypography>
-          <StyledButton variant="outlined">Checkout</StyledButton>
+          <StyledButton variant="outlined">{t('roomPage.checkOutLabel')}</StyledButton>
     </Container>
   );
 };

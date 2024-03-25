@@ -109,7 +109,7 @@ const GuestDropdown = () => {
     return (
       <Box>
         <Typography fontSize={{ md: "0.7rem", xs: "0.875rem", lg: "0.875rem" }} color={"#858685"}>
-          {"Guests"}
+          {t("roomPage.guestsLabel")}
         </Typography>
         <Typography fontWeight={700}>{`${
           guestCounts.adults > 0 ? (guestCounts.adults > 1 ? `${guestCounts.adults} ${t('landingPage.adultsLabel')}` : `${guestCounts.adults} ${t('landingPage.adultsLabelSingular')}` ): ""

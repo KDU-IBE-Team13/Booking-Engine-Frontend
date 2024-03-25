@@ -10,14 +10,16 @@ import roomPic6 from "../../../assets/room-pic-6.jpg";
 import Itinerary from "../../TripItineraryPanel/Itinerary";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import SortMenu from "../SortMenuItem/SortMenuItem";
+import { useTranslation } from "react-i18next";
 
 const CardContainer = () => {
+  const {t} = useTranslation();
   return (
     <CardContainerSection>
     <ContainerHeader>
-      <RoomResultsText>Room Results</RoomResultsText>
+      <RoomResultsText>{t('roomPage.roomResults')}</RoomResultsText>
       <SortSection>
-        <ResultsPaginationText>Showing 1-4 of 5 results | </ResultsPaginationText>
+        <ResultsPaginationText>{t('roomPage.showingLabel')} 1-4 of 5 {t('roomPage.resultsLabel')} | </ResultsPaginationText>
         <SortMenu />
       </SortSection>   
     </ContainerHeader>

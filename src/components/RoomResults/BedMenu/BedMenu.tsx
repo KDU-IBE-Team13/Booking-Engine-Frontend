@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { FormControlStyled, MenuItemStyled } from "./BedMenuStyles";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 const BedMenu = () => {
 const beds: number[] = [0, 1, 2, 3, 4, 5];
 const location = useLocation();
@@ -15,6 +16,8 @@ useEffect(() => {
   const beds = bedsParam ? Number(bedsParam) : (bedsLocal ? Number(bedsLocal) : 0);
   setSelectedBeds(beds);
 }, [location.search]);
+
+const {t} = useTranslation();
 
 const handleBedChange = (event: SelectChangeEvent<number>) => {
   const beds = Number(event.target.value);
@@ -33,7 +36,7 @@ const handleBedChange = (event: SelectChangeEvent<number>) => {
     return (
       <Box>
         <Typography fontSize={{ md: "0.7rem", xs: "0.875rem", lg: "0.875rem" }} color={"#858685"}>
-          {"Beds"}
+          {t('roomPage.bedsLabel')}
         </Typography>
         <Typography fontWeight={700}>0</Typography>
       </Box>

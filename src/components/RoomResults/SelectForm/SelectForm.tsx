@@ -185,6 +185,7 @@ export const SelectForm = () => {
         <Button
           variant="contained"
           className="searchButton"
+          onClick={routeChange}
           disabled={
             !checkInDate || !checkOutDate || selectedProperties.length === 0
           }

@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 const StyledButton = styled(Button)`
     && {
@@ -18,6 +19,34 @@ const StyledButton = styled(Button)`
 `
 
 export default function SortMenu() {
+
+  const sorts = [
+    {
+      sortType: 'PriceLow',
+      show: true,
+    },
+    {
+      sortType: 'PriceHigh',
+      show: true,
+    },
+    {
+      sortType: 'BedsLow',
+      show: true,
+    },
+    {
+      sortType: 'BedsHigh',
+      show: true,
+    },
+    {
+      sortType: 'AreaLow',
+      show: true,
+    },
+    {
+      sortType: 'AreaHigh',
+      show: false,
+    },
+  ];
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -26,6 +55,8 @@ export default function SortMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const {t} = useTranslation();
 
   return (
     <div>
@@ -37,7 +68,7 @@ export default function SortMenu() {
         onClick={handleClick}
         
       >
-        Price <KeyboardArrowDownIcon />
+        None <KeyboardArrowDownIcon />
       </StyledButton>
       <Menu
         id="fade-menu"
@@ -49,6 +80,13 @@ export default function SortMenu() {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
+          {sorts
+          .filter((sort) => sort.show)
+          .map((sort, index) => (
+            <MenuItem key={index} onClick={handleClose}>
+              {t(`sort.${sort.sortType}`)}
+            </MenuItem>
+          ))}
       </Menu>
     </div>
   );
