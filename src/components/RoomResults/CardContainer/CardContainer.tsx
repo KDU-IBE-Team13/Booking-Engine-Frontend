@@ -79,7 +79,9 @@ const CardContainer = () => {
         <div onClick={isPrevDisabled ? undefined : handlePrevPage} style={{ cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}>
           <ArrowBackIosIcon style={{ fontSize: '18px' }} />
         </div>
-        <ResultsPaginationText>{t('roomPage.showingLabel')} {resultsRange.start} - {resultsRange.end} of {roomsData ? 6 : 0}  {t('roomPage.resultsLabel')} </ResultsPaginationText>
+        {/* <ResultsPaginationText>Showing {resultsRange.start} - min({resultsRange.end}, {roomsData.responseLength}) of {roomsData ? roomsData.responseLength : 0} results </ResultsPaginationText> */}
+        <ResultsPaginationText>{t('roomPage.showingLabel')} {resultsRange.start} - {Math.min(resultsRange.end, 3 )} of {roomsData ? roomsData.responseLength : 0} {t('roomPage.resultsLabel')} </ResultsPaginationText>
+
         <div onClick={isNextDisabled ? undefined : handleNextPage} style={{ cursor: currentPage === totalPages ? 'not-allowed' : 'pointer' }}>
         <ArrowForwardIosIcon style={{ fontSize: '18px' }} />
         </div>
