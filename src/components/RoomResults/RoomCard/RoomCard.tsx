@@ -17,6 +17,7 @@ import roomPic3 from "../../../assets/room-pic-3.jpg";
 
 interface RoomCardProps {
   roomDetails: RoomsDetail; // Define the type for roomDetails
+
 }
 
 const RoomCard: React.FC<RoomCardProps> = ({ roomDetails }) => {

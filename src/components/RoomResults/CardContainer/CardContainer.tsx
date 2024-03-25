@@ -25,7 +25,6 @@ const CardContainer = () => {
   const currentPage = useSelector((state: RootState) => state.rooms.currentPage);
   const totalPages = Math.ceil(roomsData ? 6 / 3 : 0); 
   const sortOrder = useSelector((state: RootState) => state.rooms.sortOrder);
-  const currentPage = useSelector((state: RootState) => state.rooms.currentPage)
 
 
   const [resultsRange, setResultsRange] = useState({ start: 0, end: 0 });
@@ -66,6 +65,8 @@ const CardContainer = () => {
   const isPrevDisabled = currentPage === 1;
   const isNextDisabled = currentPage === totalPages || totalPages === 0;
 
+  console.log(roomsData)
+
   return (
     <CardContainerSection>
     <ContainerHeader>
@@ -94,6 +95,8 @@ const CardContainer = () => {
             );
         })}
       </CardWrapper>
+      <Itinerary />
+
     </CardContainerSection>
   );
 };

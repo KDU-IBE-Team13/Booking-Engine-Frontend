@@ -18,9 +18,9 @@ export const RoomsPage = () => {
 
   useEffect(() => {
     const checkInDate = localStorage.getItem('checkInDate') as string;
-    const checkInDateISO = checkInDate.concat('T00:00:00.000Z');
+    const checkInDateISO = checkInDate?.concat('T00:00:00.000Z');
     const checkOutDate = localStorage.getItem('checkOutDate') as string;
-    const checkOutDateISO = checkOutDate.concat('T00:00:00.000Z');
+    const checkOutDateISO = checkOutDate?.concat('T00:00:00.000Z');
     const propertyId = localStorage.getItem('propertyId') as string;
     const roomCount = Number(localStorage.getItem('roomCount'));
     const guestCountsString = localStorage.getItem('guestCounts') as string;
