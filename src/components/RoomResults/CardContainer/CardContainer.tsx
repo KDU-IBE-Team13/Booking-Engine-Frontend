@@ -13,7 +13,7 @@ import SortMenu from "../SortMenuItem/SortMenuItem";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { fetchRoomsData, setCurrentPage } from "../../../redux/slices/roomsSlice";
+import { fetchRoomsData, setCurrentPage, setFilters, setSortOrder } from "../../../redux/slices/roomsSlice";
 import { AppDispatch, RootState } from "../../../redux/store";
 import { RoomsDetail } from "../../../types/ICard";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -25,7 +25,7 @@ const CardContainer = () => {
   const currentPage = useSelector((state: RootState) => state.rooms.currentPage);
   const totalPages = Math.ceil(roomsData ? 6 / 3 : 0); 
   const sortOrder = useSelector((state: RootState) => state.rooms.sortOrder);
-
+  const filters = useSelector((state: RootState) => state.rooms.filters);
 
   const [resultsRange, setResultsRange] = useState({ start: 0, end: 0 });
 
@@ -40,9 +40,11 @@ const CardContainer = () => {
     const guestCounts = guestCountsString ? JSON.parse(guestCountsString) : {};
     const guestCountNum = guestCounts.adults + guestCounts.teens + guestCounts.kids;
     const bedCount = Number(localStorage.getItem('beds'));
+    
+    dispatch(setFilters(filters));
 
-    dispatch(fetchRoomsData(checkInDateISO, checkOutDateISO, propertyId, roomCount, guestCountNum,currentPage, bedCount, sortOrder));
-  }, [dispatch, currentPage]);
+    dispatch(fetchRoomsData(checkInDateISO, checkOutDateISO, propertyId, roomCount, guestCountNum,currentPage, bedCount, sortOrder, filters));
+  }, [dispatch, currentPage, filters, sortOrder]);
 
 
   useEffect(() => {
