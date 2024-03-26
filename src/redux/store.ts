@@ -3,13 +3,15 @@ import currencyReducer from './slices/currencySlice';
 import languageReducer from './slices/languageSlice';
 import configReducer from './slices/configSlice';
 import landingPageConfigReducer from './slices/landingPageConfigSlice';
+import roomsReducer from './slices/roomsSlice';
 
 export const store = configureStore({
   reducer: {
     currency: currencyReducer,
     language: languageReducer,
     config: configReducer,
-    landingPageConfig: landingPageConfigReducer
+    landingPageConfig: landingPageConfigReducer,
+    rooms: roomsReducer,
   },
 });
 

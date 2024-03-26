@@ -115,11 +115,20 @@ const BookingDatesCalendar: React.FC<CalendarProps> = ({
 
   const setBookingDates = () => {
     if (bookingStartDate && bookingEndDate) {
-      setCheckInDate(bookingStartDate);
-      setCheckOutDate(bookingEndDate);
-      setIsCalendar(false);
+        setCheckInDate(bookingStartDate);
+        setCheckOutDate(bookingEndDate);
+        setIsCalendar(false);
+
+        const nextBookingStartDate = new Date(bookingStartDate);
+        nextBookingStartDate.setDate(nextBookingStartDate.getDate() + 1);
+
+        const nextBookingEndDate = new Date(bookingEndDate);
+        nextBookingEndDate.setDate(nextBookingEndDate.getDate() + 1);
+
+        localStorage.setItem('checkInDate', nextBookingStartDate.toISOString().split('T')[0]);
+        localStorage.setItem('checkOutDate', nextBookingEndDate.toISOString().split('T')[0]);
     }
-  };
+};
 
   useEffect(() => {
     const handleResize = () => {

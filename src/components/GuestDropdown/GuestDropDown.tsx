@@ -20,12 +20,15 @@ export interface GuestSelectProps {
   rooms: number;
 }
 
+
 const GuestDropdown = (rooms: GuestSelectProps) => {
-  const [guestCounts, setGuestCounts] = useState<GuestCounts>({
-    adults: 1,
-    teens: 0,
-    kids: 0,
+  const [guestCounts, setGuestCounts] = useState<GuestCounts>(() => {
+    const storedCounts = localStorage.getItem("guestCounts");
+    return storedCounts ? JSON.parse(storedCounts) : { adults: 1, teens: 0, kids: 0 };
   });
+
+  localStorage.setItem("guestCounts", JSON.stringify(guestCounts));
+
 
   const { t } = useTranslation();
 
@@ -71,10 +74,12 @@ const GuestDropdown = (rooms: GuestSelectProps) => {
     const updatedCount = guestCounts[type] + value;
 
     if (totalCount + value <= MAX_GUEST_COUNT && updatedCount >= 0) {
-      setGuestCounts((prevCounts) => ({
-        ...prevCounts,
-        [type]: updatedCount,
-      }));
+      setGuestCounts((prevCounts) => {
+        const updatedCounts = { ...prevCounts, [type]: updatedCount };
+        console.log(updatedCounts);
+        localStorage.setItem("guestCounts", JSON.stringify(updatedCounts));
+        return updatedCounts;
+      });
     }
   };
 

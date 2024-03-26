@@ -7,21 +7,31 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 export interface RoomSelectProps {
   rooms: number;
   setRooms: React.Dispatch<React.SetStateAction<number>>;
 }
+ 
 
-const RoomSelect = ({ rooms, setRooms }: RoomSelectProps) => {
+const RoomSelect = () => {
+
+  const [rooms, setRooms] = useState<number | "">(() => {
+    const storedRoomCount = localStorage.getItem("roomCount");
+    const storedRoomCountNum: number = Number(storedRoomCount);
+    return storedRoomCountNum || 1;
+  });
+
   const { t } = useTranslation();
 
   const roomOptions = useSelector(
     (state: RootState) => state.landingPageConfig.searchForm.rooms.options
   );
 
-  const handleChange = (event: SelectChangeEvent<number>) => {
-    setRooms(event.target.value as number);
+  const handleChange = (event: SelectChangeEvent<number | "">) => {
+    setRooms(event.target.value as number | "");
+    localStorage.setItem("roomCount", event.target.value as string);
   };
 
   return (

@@ -1,20 +1,22 @@
-import GuestDropdown from "../GuestDropdown/GuestDropDown";
-import PropertyDropDown from "../PropertyDropDown/PropertyDropDown";
+import GuestDropdown from "../../GuestDropdown/GuestDropDown";
+import PropertyDropDown from "../../PropertyDropDown/PropertyDropDown";
 import { SelectFormStyled } from "./SelectFormStyles";
-import RoomSelect from "../RoomSelect/RoomSelect";
-import Calendar from "../Calendar/Calendar";
+import  RoomSelect from "../../LandingRoomSelect/RoomSelect";
+import Calendar from "../../Calendar/Calendar";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
   FAILED_PROPERTY_RATES_FETCH_MESSAGE,
   NIGHTLY_RATE_ENDPOINT,
-} from "../../constants/constants";
+} from "../../../constants/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
-import { fetchLandingPageConfig } from "../../redux/slices/landingPageConfigSlice";
+import { AppDispatch, RootState } from "../../../redux/store";
+import { fetchLandingPageConfig } from "../../../redux/slices/landingPageConfigSlice";
 import { useTranslation } from "react-i18next";
-import { fetchExchangeRates } from "../../redux/slices/currencySlice";
-import { IDate } from "../../types/IDate";
+import { fetchExchangeRates } from "../../../redux/slices/currencySlice";
+import { IDate } from "../../../types/IDate";
+import { useNavigate } from "react-router-dom";
+
 
 export const SelectForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -53,6 +55,38 @@ export const SelectForm = () => {
     (state: RootState) =>
       state.landingPageConfig.searchForm.wheelchairAccessible
   );
+
+  const navigate = useNavigate(); 
+  const routeChange = () => { 
+    const path = `/room-results`;
+  
+    const checkInDate = localStorage.getItem('checkInDate');
+    const checkOutDate = localStorage.getItem('checkOutDate');
+  
+    const guestCountsString = localStorage.getItem('guestCounts');
+    const guestCounts = guestCountsString ? JSON.parse(guestCountsString) : {};
+    const adultCount: number = guestCounts?.["adults"] ? guestCounts["adults"] : 1;
+    const teenCount: number = guestCounts?.["teens"] ? guestCounts["teens"] : 0;
+    const childCount: number = guestCounts?.["kids"] ? guestCounts["kids"] : 0;
+
+    const roomCount = localStorage.getItem('roomCount');
+    const roomCountNum = roomCount ? Number(roomCount): 1;
+
+  
+    let searchParams = '?';
+    if (checkInDate && checkOutDate) {
+      searchParams += `checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&`;
+    }
+    else
+    {
+      searchParams += ``;
+    }
+
+    searchParams += `adults=${adultCount}&teens=${teenCount}&kids=${childCount}&rooms=${roomCountNum}`;
+  
+    navigate(path + searchParams);
+  }
+  
 
   useEffect(() => {
     dispatch(fetchLandingPageConfig());
@@ -128,7 +162,7 @@ export const SelectForm = () => {
         <div className="roomsSpecification">
           {isGuestsDropdownEnabled && <GuestDropdown rooms={rooms} />}
           {isRoomsDropdownEnabled && (
-            <RoomSelect rooms={rooms} setRooms={setRooms} />
+            <RoomSelect />
           )}
         </div>
         {wheelchairAccessible && (
@@ -154,6 +188,7 @@ export const SelectForm = () => {
           disabled={
             !checkInDate || !checkOutDate || selectedProperties.length === 0
           }
+          onClick={routeChange}
         >
           {t("landingPage.search")}
         </Button>

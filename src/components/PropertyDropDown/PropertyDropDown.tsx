@@ -51,12 +51,13 @@ export default function PropertyDropDown({
     fetchData();
   }, []);
 
-  // const [selectedProperties, setSelectedProperties] = React.useState<string[]>(
-  //   []
-  // );
 
   const handleChange = (event: SelectChangeEvent<string[]>) => {
     const value = event.target.value;
+    const match = value[0].match(/\d+/); 
+    const propertyId = match ? parseInt(match[0], 10) : null; 
+    localStorage.setItem('propertyId', propertyId? propertyId.toString() : '13');
+
     const selectedValues = Array.isArray(value) ? value : [value as string];
 
     setSelectedProperties(selectedValues);
